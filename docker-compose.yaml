@@ -1,0 +1,10 @@
+version: '3'
+services:
+  redis:
+    image: "redis"
+    ports:
+         - "51002:6379"
+  postgres:
+      image: "mdillon/postgis"
+      ports:
+           - "51003:5432"

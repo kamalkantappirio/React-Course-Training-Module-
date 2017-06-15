@@ -1,0 +1,14 @@
+{
+  "name": "7-Eleven Storewalk Web App",
+  "description": "The Storewalk Web Application",
+  "keywords": [
+    "react",
+    "web"
+  ],
+  "addons": [
+    "papertrail:choklad"
+  ],
+  "env": {
+    "REACT_APP_API_ROOT": "https://store-walk-services-dev.herokuapp.com"
+  }
+}
