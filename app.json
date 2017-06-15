@@ -1,5 +1,5 @@
 {
-  "name": "7-Eleven Storewalk Web App",
+  "name": "mhg-bluesky",
   "description": "The Storewalk Web Application",
   "keywords": [
     "react",
@@ -9,6 +9,6 @@
     "papertrail:choklad"
   ],
   "env": {
-    "REACT_APP_API_ROOT": "https://store-walk-services-dev.herokuapp.com"
+    "REACT_APP_API_ROOT": "https://mhg-bluesky-dev.herokuapp.com"
   }
 }

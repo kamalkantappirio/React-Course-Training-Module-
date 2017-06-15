@@ -1,9 +1,9 @@
 {
-  "name": "7-eleven-storewalk-web",
+  "name": "mhg-bluesky",
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node": "6.10.0"
+    "node": "8.1.2"
   },
   "dependencies": {
     "axios": "^0.16.1",
@@ -44,14 +44,9 @@
     "winston": "^2.3.1"
   },
   "scripts": {
-    "build-css": "./node_modules/.bin/node-sass src/ -o src/",
-    "watch-css": "npm run build-css && node-sass src/ -o src/ --watch --recursive",
-    "start": "./node_modules/.bin/heroku-node-settings index.js",
-    "heroku-postbuild": "npm rebuild node-sass && npm run build-css && ./node_modules/.bin/react-scripts build",
-    "develop-js": "PORT=3003 react-scripts start",
-    "develop": "./node_modules/.bin/npm-run-all -p watch-css develop-js",
-    "build": "npm run build-css && react-scripts build",
-    "test": "CI=true ./node_modules/.bin/react-scripts test --env=jsdom ./src/*.test.js",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   }
 }
