@@ -1,32 +1,13 @@
-# See https://help.github.com/ignore-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.idea
+.idea/
+.vscode/
+node_modules/
+build
 .DS_Store
-*.env*
+*.tgz
+my-app*
+template/src/__tests__/__snapshots__/
+lerna-debug.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
-## CSS files, we are using SASS
-src/**/*.css
-src/**/App.css
-src/**/styles.css
-
-
-## PEM files
-*.pem
-
-# .env files
-*.env
-/sql/storewalk_stage.sql
-/sql/storewalk_dev.sql
+/.changelog
