@@ -9,6 +9,10 @@
     "papertrail:choklad"
   ],
   "env": {
-    "REACT_APP_API_ROOT": "https://mhg-bluesky-dev.herokuapp.com"
-  }
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/nodejs"
+    }
+  ]
 }
