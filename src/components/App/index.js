@@ -10,7 +10,7 @@ class App extends Component {
   static propTypes = {}
   static defaultProps = {}
   state = {
-  }
+  } 
 
   render() {
     

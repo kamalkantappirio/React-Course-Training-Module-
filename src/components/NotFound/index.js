@@ -4,9 +4,10 @@ import classnames from 'classnames';
 
 import './style.css';
 
-export default class NotFound extends Component {
+class NotFound extends Component {
   static propTypes = {}
   static defaultProps = {}
+  defaultProps = {};
   state = {}
 
   render() {
@@ -20,3 +21,5 @@ export default class NotFound extends Component {
     );
   }
 }
+
+export default NotFound;
