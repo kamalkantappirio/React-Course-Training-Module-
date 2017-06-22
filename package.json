@@ -6,29 +6,31 @@
     "node": "8.1.2"
   },
   "dependencies": {
-    "babel-preset-stage-0": "^6.24.1",
     "body-parser": "^1.17.2",
     "classnames": "^2.2.5",
     "concurrently": "^3.4.0",
     "cors": "^2.8.3",
-    "cz-customizable": "^5.0.0",
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
     "heroku-node-settings": "^1.0.2",
     "jsforce": "^1.8.0",
     "map-filter-reduce": "^3.0.3",
     "morgan": "^1.7.0",
+    "npm-run-all": "^4.0.2",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "react-router": "^2.6.1",
     "react-scripts": "^1.0.7"
   },
   "scripts": {
-    "start": "concurrently \"PORT=3001 node server\"  \"react-scripts start\"",
+    "build-css": "node-sass-chokidar src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
+    "start-js": "react-scripts start",
+    "start": "concurrently \"PORT=3001 node server\"  \"npm-run-all -p watch-css start-js\"",
     "postinstall": "react-scripts build",
     "start:client": "react-scripts start",
     "start:server": "node server",
-    "build": "react-scripts build",
+    "build": "npm run build-css && react-scripts build",
     "eject": "react-scripts eject",
     "test": "mocha test"
   },
@@ -41,5 +43,8 @@
     "rules": {
       "strict": 0
     }
+  },
+  "devDependencies": {
+    "node-sass-chokidar": "^0.0.3"
   }
 }

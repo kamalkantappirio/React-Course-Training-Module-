@@ -9,10 +9,13 @@ class About extends Component {
   static defaultProps = {}
   state = {}
 
+  componentDidMount() {
+  }
+
   render() {
     const { className } = this.props;
     return (
-      <div className={classnames('About', className)}>
+      <div className={classnames('about', className)}>
         <h1>
           About
         </h1>
