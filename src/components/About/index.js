@@ -10,6 +10,15 @@ class About extends Component {
   state = {}
 
   componentDidMount() {
+    fetch('/api', {
+      method: 'get'
+    }).then(function(response) {
+      return response.json();
+    }).then(function(j) {
+      console.log(j)
+    }).catch(function(err) {
+      // Error :(
+    });
   }
 
   render() {

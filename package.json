@@ -16,17 +16,20 @@
     "jsforce": "^1.8.0",
     "map-filter-reduce": "^3.0.3",
     "morgan": "^1.7.0",
+    "newrelic": "^1.40.0",
     "npm-run-all": "^4.0.2",
     "react": "^15.2.1",
     "react-dom": "^15.2.1",
     "react-router": "^2.6.1",
-    "react-scripts": "^1.0.7"
+    "react-scripts": "^1.0.7",
+    "node-sass-chokidar": "^0.0.3"
   },
   "scripts": {
     "build-css": "node-sass-chokidar src/ -o src/",
     "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive",
     "start-js": "react-scripts start",
-    "start": "concurrently \"PORT=3001 node server\"  \"npm-run-all -p watch-css start-js\"",
+    "start": "concurrently \"PORT=3001 node server\"  \"NODE_ENV=production npm-run-all -p watch-css start-js\"",
+    "start:dev": "concurrently \"PORT=3001 node server\"  \"NODE_ENV=development npm-run-all -p watch-css start-js\"",
     "postinstall": "react-scripts build",
     "start:client": "react-scripts start",
     "start:server": "node server",
@@ -43,8 +46,5 @@
     "rules": {
       "strict": 0
     }
-  },
-  "devDependencies": {
-    "node-sass-chokidar": "^0.0.3"
   }
 }
