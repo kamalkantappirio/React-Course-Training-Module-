@@ -1,32 +1,24 @@
-// src/components/App/index.js
-import React, { Component } from 'react';
-import classnames from 'classnames';
-
-import logo from './logo.svg';
-import './style.css';
+import React, {Component} from 'react';
+import Header from "../Common/Header";
 
 class App extends Component {
 
   static propTypes = {}
   static defaultProps = {}
   state = {
-  } 
-
-  render() {
-    
-    const { className } = this.props;
-    return (
-      <div className={classnames('App', className)}>
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </div>
-    );
   }
+
+    goTo(route) {
+        this.props.history.replace(`/${route}`)
+    }
+
+    render() {
+        return (
+            <div className="container">
+               <Header auth={this.props.route.auth} />
+            </div>
+        );
+    }
 }
 
 export default App;

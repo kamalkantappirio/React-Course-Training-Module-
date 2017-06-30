@@ -7,10 +7,12 @@ import './style.css';
 class About extends Component {
   static propTypes = {}
   static defaultProps = {}
-  state = {}
+  state = {
+    token: localStorage.getItem('access_token')
+  }
 
   componentDidMount() {
-    fetch('/api', {
+    fetch('/account/' +this.state.token, {
       method: 'get'
     }).then(function(response) {
       return response.json();
@@ -19,6 +21,7 @@ class About extends Component {
     }).catch(function(err) {
       // Error :(
     });
+
   }
 
   render() {
