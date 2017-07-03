@@ -32,6 +32,12 @@
     "react-scripts": "^1.0.7",
     "reactstrap": "^4.6.2"
   },
+  "lint-staged": {
+    "src/*.js": [
+      "prettier --write",
+      "git add"
+    ]
+  },
   "scripts": {
     "start-js": "react-scripts start",
     "start": "concurrently \"PORT=3001 node server\"  \"NODE_ENV=development npm-run-all -p start-js\"",
@@ -41,7 +47,8 @@
     "start:server": "node server",
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "test": "mocha test"
+    "test": "mocha test",
+    "precommit": "lint-staged"
   },
   "proxy": "http://0.0.0.0:3001",
   "eslintConfig": {
@@ -52,5 +59,10 @@
     "rules": {
       "strict": 0
     }
+  },
+  "devDependencies": {
+    "husky": "^0.14.2",
+    "lint-staged": "^4.0.0",
+    "prettier": "^1.5.2"
   }
 }
