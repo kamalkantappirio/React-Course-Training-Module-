@@ -1,9 +1,30 @@
 const jsforce = require('jsforce');
 
-getAccountList = (username = '', password = '') => {
+getAccountList = (accessToken='',instanceUrl='') => {
 
     return new Promise(function (resolve, reject) {
-        
+        var conn = new jsforce.Connection({
+            instanceUrl :instanceUrl ,
+            accessToken :accessToken
+        });
+
+
+        conn.query("SELECT Id, Name, BillingAddress, Phone, Industry FROM Account LIMIT 20")
+            .then(response => {
+                return resolve(response);
+
+            }, function (err) {
+                return reject(err);
+            });
+
+    })
+}
+
+
+authUserSfdc = (username = '', password = '') => {
+
+    return new Promise(function (resolve, reject) {
+
         var conn = new jsforce.Connection({
             // loginUrl: process.env.SFDC_LOGIN_URL
             oauth2 : {
@@ -16,32 +37,30 @@ getAccountList = (username = '', password = '') => {
         });
 
         conn.login(username, password, function(err, userInfo) {
-            if (err) { return console.error(err); }
-            // Now you can get the access token and instance URL information.
-            // Save them to establish connection next time.
-            console.log(conn.accessToken);
-            console.log(conn.instanceUrl);
-            // logged in user property
-            console.log("User ID: " + userInfo.id);
-            console.log("Org ID: " + userInfo.organizationId);
+
+
+
 
             if (err) {
-                return reject(err);
+                return reject(userInfo);
             }
-            conn.query("SELECT Id, Name, BillingAddress, Phone, Industry FROM Account LIMIT 20")
-                .then(response => {
-                    return resolve(response);
 
-                }, function (err) {
-                    return reject(err);
-                });
+            // Now you can get the access token and instance URL information.
+            // Save them to establish connection next time.
+            userInfo.accessToken = conn.accessToken;
+            userInfo.instanceUrl = conn.instanceUrl;
+
+
+            return resolve(userInfo);
 
         });
 
     })
 }
 
+
 module.exports = {
-    getAccountList
+    getAccountList,
+    authUserSfdc
 }
 

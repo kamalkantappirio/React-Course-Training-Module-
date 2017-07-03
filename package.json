@@ -21,6 +21,8 @@
     "morgan": "^1.7.0",
     "newrelic": "^1.40.0",
     "npm-run-all": "^4.0.2",
+    "passport": "^0.3.2",
+    "passport-forcedotcom": "^0.1.4",
     "promise": "^8.0.0",
     "react": "^15.2.1",
     "react-addons-css-transition-group": "^15.6.0",

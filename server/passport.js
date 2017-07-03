@@ -1,16 +1,12 @@
-// server/app.js
-const express = require('express');
-const morgan = require('morgan');
-const path = require('path');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const app = express();
-const account = require('./sfdc')
-require('newrelic');
-require('dotenv').config();
-var passport = require('passport'),
+/**
+ * Created by lokendra on 03/07/17.
+ */'use strict';
+var express = require('express'),
+    methodOverride = require('method-override'),
+    passport = require('server/passport'),
     util = require('util'),
     ForceDotComStrategy = require('passport-forcedotcom').Strategy;
+
 
 //----------------------------------------------------------------------------
 // REPLACE THE BELOW SETTING TO MATCH YOUR SALESFORCE CONNECTED-APP'S SETTINGS
@@ -33,7 +29,7 @@ var CF_CLIENT_SECRET = '8328306587854636993';
 //
 //   app.get('/auth/forcedotcom/callback, callback))
 //
-var CF_CALLBACK_URL = 'http://localhost:3001/auth/forcedotcom/callback';
+var CF_CALLBACK_URL = 'http://localhost:3000/auth/forcedotcom/callback';
 
 
 // Salesforce Authorization URL (this defaults to:
@@ -43,6 +39,8 @@ var SF_AUTHORIZE_URL = 'https://login.salesforce.com/services/oauth2/authorize';
 // Salesforce token URL (this defaults to:
 // https://login.salesforce.com/services/oauth2/token)
 var SF_TOKEN_URL = 'https://login.salesforce.com/services/oauth2/token';
+
+//----------------------------------------------------------------------------
 
 
 // Passport session setup.
@@ -59,6 +57,7 @@ passport.serializeUser(function(user, done) {
 passport.deserializeUser(function(obj, done) {
     done(null, obj);
 });
+
 
 // Use the ForceDotComStrategy within Passport.
 //   Strategies in Passport require a `verify` function, which accept
@@ -85,38 +84,29 @@ var sfStrategy = new ForceDotComStrategy({
         return done(null, profile);
     });
 });
+
 passport.use(sfStrategy);
+
+
+var app = express();
+
+// // configure Express
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+app.use(express.logger());
+app.use(express.cookieParser());
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(methodOverride());
+app.use(express.session({
+    secret: 'keyboard cat'
+}));
+// Initialize Passport!  Also use passport.session() middleware, to support
+// persistent login sessions (recommended).
 app.use(passport.initialize());
 app.use(passport.session());
-app.set('trust proxy', 'loopback')
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(cors());
-
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "*");
-  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
-  next();
-});
-
-app.post('/account', function(req, res){
-
-  const accessToken = req.body.accessToken;
-  const instanceUrl = req.body.instanceUrl;
-
-  const aDetail = account.getAccountList(accessToken, instanceUrl);
-
-  aDetail.then(response => {
-    console.log(response);
-    return  res.status(200).json(response)
-  })
-  .catch(error => {
-      console.log(error);
-      return error;
-  });
-});
+app.use(app.router);
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
     console.log(req.user);
@@ -131,23 +121,14 @@ app.get('/', function(req, res) {
 });
 
 
-app.post('/login', function(req, res){
+app.get('/login', function(req, res) {
+    req.logout();
+    req.session.destroy();
 
-    console.log(req.body);
-    const username = req.body.username;
-    const password = req.body.password;
-
-    const aDetail = account.authUserSfdc(username, password);
-
-    aDetail.then(response => {
-        console.log(response);
-        return  res.status(200).json(response)
-    })
-        .catch(error => {
-            console.log(error);
-            return error;
-        });
-})
+    res.render('login', {
+        user: req.user
+    });
+});
 
 // GET /auth/forcedotcom
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -172,18 +153,21 @@ app.get('/auth/forcedotcom/callback', passport.authenticate('forcedotcom', {
 });
 
 app.get('/logout', function(req, res) {
+    res.redirect('/');
+});
+
+app.listen(3000);
+
+
+// Simple route middleware to ensure user is authenticated.
+//   Use this route middleware on any resource that needs to be protected.  If
+//   the request is authenticated (typically via a persistent login session),
+//   the request will proceed.  Otherwise, the user will be redirected to the
+//   login page.
+
+function ensureAuthenticated(req, res, next) {
+    if(req.isAuthenticated()) {
+        return next();
+    }
     res.redirect('/login');
-});
-
-
-// Serve static assets
-app.use(express.static(path.resolve(__dirname, '..', 'build')));
-
-// Redirect all routes back to index.html, as this is simply serves up a SPA
-app.get('/[^\.]+$', function(req, res){
-  res.set('Content-Type', 'text/html')
-    .sendFile(__dirname + '/build/index.html');
-});
-
-
-module.exports = app;
+}

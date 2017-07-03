@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Header from "../Common/Header";
-import {getAccountList} from "../../common/services/account";
+import {getAccountList,userLogin} from "../../common/services/restclient";
 import AccountRow from "../Common/AccountRow";
 
 
@@ -17,7 +17,32 @@ class Home extends Component {
 
     _handleLogin = (username, password) => {
         this.setState({loading: true});
-        getAccountList(this.__username.value, this.__password.value).then(response => {
+
+        userLogin(this.__username.value, this.__password.value).then(response => {
+            console.log('page res');
+            console.log(response);
+
+            let state = Object.assign({}, this.state);
+            state.loading = false;
+            if(response !== 'undefine')
+            {
+                // Store
+                localStorage.setItem("accessToken", response.accessToken);
+                localStorage.setItem("instanceUrl", response.instanceUrl);
+
+
+                console.log(localStorage.getItem('accessToken'));
+
+                this._getAccountList();
+            }
+            this.setState(state);
+        }).catch(error => {
+            this.setState({loading: false})
+        });
+    }
+
+    _getAccountList=()=>{
+        getAccountList().then(response => {
             console.log('page res');
             console.log(response);
 
