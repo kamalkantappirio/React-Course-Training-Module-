@@ -4,5 +4,6 @@ export const ENVIRONMENT = {
 
 export const API_CONST = {
     ACCOUNT: '/account',
-    LOGIN: '/login'
+    LOGIN: '/login',
+    LOGOUT: '/logout'
 }

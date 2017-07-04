@@ -1,7 +1,7 @@
 /**
  * Created by lokendra on 30/06/17.
  */
-import {API_CONST} from '../constants';
+import {API_CONST,ENVIRONMENT} from '../constants';
 import {handleFetch} from './handlers';
 
 export function getAccountList() {
@@ -29,4 +29,19 @@ export function userLogin(username, password) {
     };
 
     return handleFetch(url, options)
+}
+
+
+export function authLogin() {
+ /*   const url = `${ENVIRONMENT.API_ROOT}${API_CONST.LOGIN}`;
+    const options = {
+        method: 'GET',
+        headers:{'Content-Type':'application/json'},
+
+    };
+
+    return handleFetch(url, options)*/
+
+    const url = `${ENVIRONMENT.API_ROOT}${API_CONST.LOGIN}`;
+    return window.open(url, "_self");
 }

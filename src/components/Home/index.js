@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import {getAccountList,userLogin} from "../../common/services/restclient";
 import AccountRow from "../Common/AccountRow";
+import {browserHistory} from 'react-router'
+
 
 
 class Home extends Component {
@@ -11,7 +13,17 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        
+        console.log(JSON.stringify(this.props));
+
+
+    }
+
+
+    _handleLogout=()=>
+    {
+        localStorage.clear();
+        browserHistory.replace('/');
+
     }
 
     _handleLogin = (username, password) => {
@@ -30,7 +42,6 @@ class Home extends Component {
                 localStorage.setItem("instanceUrl", response.instanceUrl);
 
 
-                console.log(localStorage.getItem('accessToken'));
 
                 this._getAccountList();
             }
@@ -66,7 +77,7 @@ class Home extends Component {
                 <input type="password" placeholder="password" ref={(input) => {
                     this.__password = input;
                 }} />
-                <button onClick={this._handleLogin}>Submit</button>
+                <button onClick={this._handleLogout}>Logout</button>
 
                 {!this.state.loading && <div className="list-group">
                     {this.state.accountList.map((account, index) => {

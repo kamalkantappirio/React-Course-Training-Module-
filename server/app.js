@@ -8,7 +8,10 @@ const app = express();
 const account = require('./sfdc')
 require('newrelic');
 require('dotenv').config();
-var passport = require('passport'),
+
+const WEB_ROOT=`${process.env.WEB_ROOT}`;
+
+const passport = require('passport'),
     util = require('util'),
     ForceDotComStrategy = require('passport-forcedotcom').Strategy;
 
@@ -17,10 +20,10 @@ var passport = require('passport'),
 //----------------------------------------------------------------------------
 
 // Set Force.com app's clientID
-var CF_CLIENT_ID = '3MVG9ZL0ppGP5UrC80AgNht24mMAjVhKNz_9ZNk1e7RbnQD3XHeVD7FWBwshwXinEYUGozdKTH2CcxvH0MjaI';
+const CF_CLIENT_ID = '3MVG9ZL0ppGP5UrC80AgNht24mMAjVhKNz_9ZNk1e7RbnQD3XHeVD7FWBwshwXinEYUGozdKTH2CcxvH0MjaI';
 
 // Set Force.com app's clientSecret
-var CF_CLIENT_SECRET = '8328306587854636993';
+const CF_CLIENT_SECRET = '8328306587854636993';
 
 // Note: You should have a app.get(..) for this callback to receive callback
 // from Force.com
@@ -33,17 +36,31 @@ var CF_CLIENT_SECRET = '8328306587854636993';
 //
 //   app.get('/auth/forcedotcom/callback, callback))
 //
-var CF_CALLBACK_URL = 'http://localhost:3001/auth/forcedotcom/callback';
+const CF_CALLBACK_URL = 'http://localhost:3001/auth/forcedotcom/callback';
 
 
 // Salesforce Authorization URL (this defaults to:
 // https://login.salesforce.com/services/oauth2/authorize)
-var SF_AUTHORIZE_URL = 'https://login.salesforce.com/services/oauth2/authorize';
+const SF_AUTHORIZE_URL = 'https://login.salesforce.com/services/oauth2/authorize';
 
 // Salesforce token URL (this defaults to:
 // https://login.salesforce.com/services/oauth2/token)
-var SF_TOKEN_URL = 'https://login.salesforce.com/services/oauth2/token';
+const SF_TOKEN_URL = 'https://login.salesforce.com/services/oauth2/token';
 
+app.use(passport.initialize());
+app.use(passport.session());
+app.set('trust proxy', 'loopback')
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(cors());
+
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "*");
+    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
+    next();
+});
 
 // Passport session setup.
 //   To support persistent login sessions, Passport needs to be able to
@@ -64,7 +81,7 @@ passport.deserializeUser(function(obj, done) {
 //   Strategies in Passport require a `verify` function, which accept
 //   credentials (in this case, an accessToken, refreshToken, and Salesforce
 //   profile), and invoke a callback with a user object.
-var sfStrategy = new ForceDotComStrategy({
+const sfStrategy = new ForceDotComStrategy({
     clientID: CF_CLIENT_ID,
     clientSecret: CF_CLIENT_SECRET,
     callbackURL: CF_CALLBACK_URL,
@@ -75,6 +92,8 @@ var sfStrategy = new ForceDotComStrategy({
     // asynchronous verification, for effect...
     process.nextTick(function() {
 
+       // console.log(accessToken);
+
         // To keep the example simple, the user's forcedotcom profile is returned to
         // represent the logged-in user.  In a typical application, you would want
         // to associate the forcedotcom account with a user record in your database,
@@ -82,25 +101,39 @@ var sfStrategy = new ForceDotComStrategy({
         //
         // We'll remove the raw profile data here to save space in the session store:
         delete profile._raw;
-        return done(null, profile);
+
+        return done(null,accessToken);
     });
 });
+
+
+/*const sfStrategy = new CustomStrategy({
+    clientID: CF_CLIENT_ID,
+    clientSecret: CF_CLIENT_SECRET,
+    callbackURL: CF_CALLBACK_URL,
+    authorizationURL: SF_AUTHORIZE_URL,
+    tokenURL: SF_TOKEN_URL
+}, function(accessToken, refreshToken, profile, done) {
+
+    // asynchronous verification, for effect...
+    process.nextTick(function() {
+
+        // console.log(accessToken);
+
+        // To keep the example simple, the user's forcedotcom profile is returned to
+        // represent the logged-in user.  In a typical application, you would want
+        // to associate the forcedotcom account with a user record in your database,
+        // and return that user instead.
+        //
+        // We'll remove the raw profile data here to save space in the session store:
+        delete profile._raw;
+
+        return done(null,accessToken);
+    });
+});*/
+
+
 passport.use(sfStrategy);
-app.use(passport.initialize());
-app.use(passport.session());
-app.set('trust proxy', 'loopback')
-
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
-app.use(cors());
-
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "*");
-  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
-  next();
-});
-
 app.post('/account', function(req, res){
 
   const accessToken = req.body.accessToken;
@@ -118,16 +151,9 @@ app.post('/account', function(req, res){
   });
 });
 
-app.get('/', function(req, res) {
-    console.log(req.user);
-    if(!req.user) {
-        req.session.destroy();
-        req.logout();
-        return res.redirect('/login');
-    }
-    res.render('index', {
-        user: req.user
-    });
+app.get('/login',function(req, res) {
+
+    passport.authenticate('forcedotcom')(req,res);
 });
 
 
@@ -166,16 +192,18 @@ app.get('/auth/forcedotcom', passport.authenticate('forcedotcom'), function(req,
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
 app.get('/auth/forcedotcom/callback', passport.authenticate('forcedotcom', {
-    failureRedirect: '/'
+    failureRedirect: WEB_ROOT+'/'
 }), function(req, res) {
-    res.redirect('/');
+    console.log(res.req.user);
+
+    res.redirect(WEB_ROOT+'/?access_token='+res.req.user.params.access_token+'&instance_url='+res.req.user.params.instance_url);
 });
 
 app.get('/logout', function(req, res) {
-    res.redirect('/login');
+    res.redirect(WEB_ROOT+'/');
 });
 
-
+app.listen(3000);
 // Serve static assets
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
 

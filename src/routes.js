@@ -12,6 +12,7 @@ const Routes = (props) => (
         <Route path="/" component={App}/>
         <Route path="/home" component={Home}/>
         <Route path="/about" component={About}/>
+        <Route path="/callback" component={About}/>
         <Route path="*" component={NotFound}/>
     </Router>
 );
