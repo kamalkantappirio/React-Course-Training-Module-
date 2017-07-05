@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {getAccountList,userLogin} from "../../common/services/restclient";
+import {getAccountList} from "../../common/services/restclient";
 import AccountRow from "../Common/AccountRow";
 import {browserHistory} from 'react-router'
 
@@ -14,7 +14,7 @@ class Home extends Component {
 
     componentDidMount() {
         console.log(JSON.stringify(this.props));
-
+     this._getAccountList();
 
     }
 
@@ -26,30 +26,6 @@ class Home extends Component {
 
     }
 
-    _handleLogin = (username, password) => {
-        this.setState({loading: true});
-
-        userLogin(this.__username.value, this.__password.value).then(response => {
-            console.log('page res');
-            console.log(response);
-
-            let state = Object.assign({}, this.state);
-            state.loading = false;
-            if(response !== 'undefine')
-            {
-                // Store
-                localStorage.setItem("accessToken", response.accessToken);
-                localStorage.setItem("instanceUrl", response.instanceUrl);
-
-
-
-                this._getAccountList();
-            }
-            this.setState(state);
-        }).catch(error => {
-            this.setState({loading: false})
-        });
-    }
 
     _getAccountList=()=>{
         getAccountList().then(response => {
@@ -71,12 +47,7 @@ class Home extends Component {
         return (
             <div className="container">
 
-                <input type="text" placeholder="username" ref={(input) => {
-                    this.__username = input;
-                }} />
-                <input type="password" placeholder="password" ref={(input) => {
-                    this.__password = input;
-                }} />
+
                 <button onClick={this._handleLogout}>Logout</button>
 
                 {!this.state.loading && <div className="list-group">

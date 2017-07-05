@@ -4,22 +4,22 @@ import {browserHistory} from 'react-router'
 
 class App extends Component {
 
-  static propTypes = {}
-  static defaultProps = {}
+
   state = {
   }
 
 
     componentDidMount() {
-        const { location } = this.props;
-        console.log(JSON.stringify(this.props));
 
-        // If it's in queryParams, it's a callback from our Auth API
-        //let params = queryParams(routing.locationBeforeTransitions.search);
+      const { location } = this.props;
+
+
         let token = location.query.access_token || localStorage.getItem('accessToken');
+        let instanceUrl=location.query.instance_url || localStorage.getItem('instanceUrl');
         if (token) {
             localStorage.setItem("accessToken", token);
-            console.log(localStorage.getItem('accessToken'));
+            localStorage.setItem("instanceUrl", instanceUrl);
+            console.log(localStorage.getItem('instanceUrl'));
             browserHistory.replace('/home')
 
         } else {
@@ -37,9 +37,7 @@ class App extends Component {
     }
 
 
-     _handleLogin = () => {
 
-     }
 
 }
 

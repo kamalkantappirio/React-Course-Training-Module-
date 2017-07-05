@@ -139,6 +139,8 @@ app.post('/account', function(req, res){
   const accessToken = req.body.accessToken;
   const instanceUrl = req.body.instanceUrl;
 
+
+  console.log(instanceUrl);
   const aDetail = account.getAccountList(accessToken, instanceUrl);
 
   aDetail.then(response => {
