@@ -2,6 +2,7 @@ export const ENVIRONMENT = {
     API_ROOT:  'http://localhost:3001'
 };
 
-export const ACCOUNT = {
-    ACCOUNT: '/account'
+export const END_POINT = {
+    ACCOUNT: '/api/account',
+    CONTACTS: '/api/contacts'
 }

@@ -5,7 +5,6 @@ export function handleFetch(url, options) {
             let statusCode;
             fetch(url, options)
                 .then(response => {
-                    console.log(response);
                     statusCode = response.status;
                     if(!response.error) {
                         return response.json();

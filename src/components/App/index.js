@@ -1,24 +1,17 @@
-import React, {Component} from 'react';
-import Header from "../Common/Header";
+import React, { Component } from "react";
 
 class App extends Component {
+  static propTypes = {};
+  static defaultProps = {};
+  state = {};
 
-  static propTypes = {}
-  static defaultProps = {}
-  state = {
+  goTo(route) {
+    this.props.history.replace(`/${route}`);
   }
 
-    goTo(route) {
-        this.props.history.replace(`/${route}`)
-    }
-
-    render() {
-        return (
-            <div className="container">
-               <Header auth={this.props.route.auth} />
-            </div>
-        );
-    }
+  render() {
+    return <div className="container" />;
+  }
 }
 
 export default App;

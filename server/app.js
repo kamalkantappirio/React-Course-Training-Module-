@@ -5,12 +5,15 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const account = require('./sfdc')
+const session = require('express-session');
+const api = require('./routes');
+
 require('newrelic');
 require('dotenv').config();
 
 app.set('trust proxy', 'loopback')
 
+app.use(session({ secret: 'keyboard cat'}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -22,23 +25,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.get('/account', function(req, res){
-
-  const username = req.query.username;
-  const password = req.query.password;
-
-  const aDetail = account.getAccountList(username, password);
-
-  aDetail.then(response => {
-    console.log(response);
-    return  res.status(200).json(response)
-  })
-  .catch(error => {
-      console.log(error);
-      return error;
-  });
-});
-
+app.use('/api', api);
 
 // Serve static assets
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
