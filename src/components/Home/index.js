@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {getAccountList} from "../../common/services/restclient";
+import {getAccount} from "../../common/services/account";
 import AccountRow from "../Common/AccountRow";
 import {browserHistory} from 'react-router'
 
@@ -28,17 +28,26 @@ class Home extends Component {
 
 
     _getAccountList=()=>{
-        getAccountList().then(response => {
-            console.log('page res');
-            console.log(response);
+        getAccount(this.__username.value, this.__password.value).then(response => {
 
             let state = Object.assign({}, this.state);
+
+            if(response[0].accessToken) {
+                state.token = true;
+            }
+
             state.loading = false;
-            if(response !== 'undefine' && response !== null && response.records !== 'undefine')
-                state.accountList = response.records;
+            
+            if(response !== 'undefined' && response !== null && response.records !== 'undefined') {
+                delete response[0];
+                state.accountList = response;
+                console.log(response);
+            }
 
             this.setState(state);
-        }).catch(error => {
+        })
+        
+        .catch(error => {
             this.setState({loading: false})
         });
     }

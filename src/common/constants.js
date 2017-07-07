@@ -7,3 +7,8 @@ export const API_CONST = {
     LOGIN: '/login',
     LOGOUT: '/logout'
 }
+
+export const END_POINT = {
+    ACCOUNT: '/account',
+    CONTACTS: '/contacts'
+}
