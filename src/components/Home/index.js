@@ -30,7 +30,7 @@ class Home extends Component {
 
     _getAccountList=()=>{
         getAccountList().then(response => {
-            console.log('page res');
+
             console.log(response);
 
             let state = Object.assign({}, this.state);

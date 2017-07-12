@@ -10,6 +10,7 @@ export function getAccountList() {
 
 
 
+    console.log(localStorage.getItem('accessToken') +'  '+localStorage.getItem('instanceUrl'));
     const options = {
         method: 'POST',
         headers:{'Content-Type':'application/json'},
@@ -19,6 +20,20 @@ export function getAccountList() {
     return handleFetch(url, options)
 }
 
+export function getAccountMapping() {
+    const url = `${API_CONST.MAPPING}`;
+
+
+
+
+
+    const options = {
+        method: 'GET',
+        headers:{'Content-Type':'application/json'},
+    };
+
+    return handleFetch(url, options)
+}
 
 export function userLogin(username, password) {
     const url = `${API_CONST.LOGIN}`;

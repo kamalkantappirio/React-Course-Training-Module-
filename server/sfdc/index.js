@@ -4,7 +4,9 @@ const jsforce = require('jsforce');
 
 getAccountList = (accessToken='',instanceUrl='') => {
 
-    pgclient.getFildsMapping();
+
+
+    console.log(accessToken+'      '+instanceUrl)
 
     return new Promise(function (resolve, reject) {
         var conn = new jsforce.Connection({

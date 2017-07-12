@@ -5,7 +5,8 @@ export const ENVIRONMENT = {
 export const API_CONST = {
     ACCOUNT: '/account',
     LOGIN: '/login',
-    LOGOUT: '/logout'
+    LOGOUT: '/logout',
+    MAPPING: '/mapping'
 }
 
 export const END_POINT = {

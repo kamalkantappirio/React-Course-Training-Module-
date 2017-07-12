@@ -8,6 +8,7 @@ const app = express();
 const account = require('./sfdc')
 require('newrelic');
 require('dotenv').config();
+const pgClient = require('./sfdc/pgclient')
 
 const WEB_ROOT=`${process.env.WEB_ROOT}`;
 
@@ -159,6 +160,40 @@ app.get('/login',function(req, res) {
 });
 
 
+app.get('/mapping',function(req, res) {
+
+
+
+    const aMapping = pgClient.getFieldsMapping();
+
+    aMapping.then(function(rows) {
+        return res.json(rows);
+    })
+        .catch(function(error) {
+            console.error(error)
+            return error;
+        });
+
+});
+
+
+app.post('/mapping',function(req, res) {
+
+
+
+    console.log(req.body);
+    const aMapping = pgClient.updateMapping(req.body);
+    aMapping.then(response => {
+
+     return  res.status(200).json('success')
+     })
+     .catch(error => {
+     console.log(error);
+     return error;
+     });
+});
+
+
 app.post('/login', function(req, res){
 
     console.log(req.body);
@@ -196,7 +231,7 @@ app.get('/auth/forcedotcom', passport.authenticate('forcedotcom'), function(req,
 app.get('/auth/forcedotcom/callback', passport.authenticate('forcedotcom', {
     failureRedirect: WEB_ROOT+'/'
 }), function(req, res) {
-    res.redirect('/?access_token='+res.req.user.params.access_token+'&instance_url='+res.req.user.params.instance_url);
+    res.redirect(WEB_ROOT+'/?access_token='+res.req.user.params.access_token+'&instance_url='+res.req.user.params.instance_url);
 });
 
 app.get('/logout', function(req, res) {
