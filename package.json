@@ -43,7 +43,6 @@
   "lint-staged": {
     "src/**/*.js": [
       "npm run lint",
-      "prettier --print-width=200 --single-quote --write",
       "git add"
     ]
   },
@@ -73,7 +72,6 @@
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.1.0",
     "husky": "^0.14.2",
-    "lint-staged": "^4.0.0",
-    "prettier": "^1.5.2"
+    "lint-staged": "^4.0.0"
   }
 }

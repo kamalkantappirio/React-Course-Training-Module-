@@ -3,7 +3,7 @@ function handleFetch(url, options) {
   return new Promise((resolve, reject) => {
     let statusCode;
     fetch(url, options)
-      .then(response => {
+      .then((response) => {
         statusCode = response.status;
         if (!response.error) {
           if (options.mode === 'no-cors') {
@@ -13,7 +13,7 @@ function handleFetch(url, options) {
         }
         return reject(response.error);
       })
-      .then(payload => {
+      .then((payload) => {
         if (statusCode !== 200) {
           return reject({ statusCode, payload });
         }

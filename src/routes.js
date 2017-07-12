@@ -7,11 +7,11 @@ import Home from './components/Home';
 import Mapping from './components/Mapping';
 
 const Routes = props =>
-  <Router {...props}>
+  (<Router {...props}>
     <Route path="/" component={App} />
     <Route path="/home" component={Home} />
     <Route path="/mapping" component={Mapping} />
     <Route path="*" component={NotFound} />
-  </Router>;
+  </Router>);
 
 export default Routes;

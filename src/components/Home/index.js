@@ -20,14 +20,14 @@ class Home extends Component {
 
   _getAccountList = () => {
     getAccountList()
-      .then(response => {
+      .then((response) => {
         const state = Object.assign({}, this.state);
         state.loading = false;
         if (response !== 'undefine' && response !== null && response.records !== 'undefine') state.accountList = response.records;
 
         this.setState(state);
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ error, loading: false });
       });
   };

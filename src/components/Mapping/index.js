@@ -83,7 +83,7 @@ class Mapping extends Component {
 
   _getAccountObject = () => {
     getAccountMapping()
-      .then(response => {
+      .then((response) => {
         // console.log(response);
 
         const state = Object.assign({}, this.state);
@@ -92,7 +92,7 @@ class Mapping extends Component {
           this.setState({ accountMapping: response });
         }
       })
-      .catch(error => {
+      .catch((error) => {
         this.setState({ error, loading: false });
       });
   };
@@ -106,7 +106,7 @@ class Mapping extends Component {
      * Method use for render the row for data.
      **/
   _renderRow = (rowData, index) =>
-    <tr key={index}>
+    (<tr key={index}>
       <td>
         {rowData.id}
       </td>
@@ -118,12 +118,12 @@ class Mapping extends Component {
           {this.state.fieldsArr.map((item, indexVal) => this.renderDropDownOption(item, indexVal))}
         </select>
       </td>
-    </tr>;
+    </tr>);
 
   _renderDropDownOption = (item, index) =>
-    <option key={index}>
+    (<option key={index}>
       {item.name}
-    </option>;
+    </option>);
 
   render() {
     return (

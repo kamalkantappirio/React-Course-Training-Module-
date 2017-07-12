@@ -2,10 +2,10 @@ import React from 'react';
 import { Navbar, Nav } from 'reactstrap';
 
 const Header = () =>
-  <div>
+  (<div>
     <Navbar inverse>
       <Nav />
     </Navbar>
-  </div>;
+  </div>);
 
 export default Header;
