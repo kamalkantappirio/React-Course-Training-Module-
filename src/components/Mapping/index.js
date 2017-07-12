@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
-import { getAccountMapping } from '../../common/services/restclient';
-
 import { Table, Button } from 'reactstrap';
+import { getAccountMapping } from '../../common/services/restclient';
 
 class Mapping extends Component {
   state = {
@@ -57,38 +56,19 @@ class Mapping extends Component {
     this._getAccountObject();
   }
 
-  _handleLogout = () => {
-    localStorage.clear();
-    browserHistory.replace('/');
-  };
-
-  _getAccountObject = () => {
-    getAccountMapping()
-      .then(response => {
-        // console.log(response);
-
-        let state = Object.assign({}, this.state);
-        state.loading = false;
-        if (response !== 'undefine' && response !== null && response.records !== 'undefine') {
-          console.log(response);
-          this.setState({ accountMapping: response });
-        }
-      })
-      .catch(error => {
-        this.setState({ loading: false });
-      });
-  };
-
   /**
      * Method call when option change from drop-down
      * In this selected value save in json
      **/
   onDropDownChange = (selectedIndex, selectedValue) => {
-    var accountMapping = this.state.accountMapping;
-    var foundIndex = accountMapping.findIndex(x => x.id === selectedIndex);
+    const accountMapping = this.state.accountMapping;
+    const foundIndex = accountMapping.findIndex(x => x.id === selectedIndex);
+    let selVal = selectedValue;
     if (foundIndex >= 0) {
-      if (selectedValue === 'Select Mapping') selectedValue = '';
-      accountMapping[foundIndex].mapping = selectedValue;
+      if (selVal === 'Select Mapping') {
+        selVal = '';
+      }
+      accountMapping[foundIndex].mapping = selVal;
     }
 
     this.setState({ accountMapping });
@@ -98,54 +78,60 @@ class Mapping extends Component {
      * Method call when user press submit button.
      **/
   onSubmitBtnClick = () => {
-    console.log(this.state.accountMapping);
+    console.log(this.state.accountMapping); // eslint-disable-line
+  };
+
+  _getAccountObject = () => {
+    getAccountMapping()
+      .then(response => {
+        // console.log(response);
+
+        const state = Object.assign({}, this.state);
+        state.loading = false;
+        if (response !== 'undefine' && response !== null && response.records !== 'undefine') {
+          this.setState({ accountMapping: response });
+        }
+      })
+      .catch(error => {
+        this.setState({ error, loading: false });
+      });
+  };
+
+  _handleLogout = () => {
+    localStorage.clear();
+    browserHistory.replace('/');
   };
 
   /**
      * Method use for render the row for data.
      **/
-  renderRow = (rowData, index) => {
-    console.log(rowData);
-    return (
-      <tr key={index}>
-        <td>
-          {rowData.id}
-        </td>
-        <td>
-          {rowData.field}
-        </td>
-        <td>
-          <select className="selectpicker" onChange={event => this.onDropDownChange(rowData.id, event.target.value)}>
-            {this.state.fieldsArr.map((item, index) => {
-              return this.renderDropDownOption(item, index);
-            })}
-          </select>
-        </td>
-      </tr>
-    );
-  };
+  _renderRow = (rowData, index) =>
+    <tr key={index}>
+      <td>
+        {rowData.id}
+      </td>
+      <td>
+        {rowData.field}
+      </td>
+      <td>
+        <select className="selectpicker" onChange={event => this.onDropDownChange(rowData.id, event.target.value)}>
+          {this.state.fieldsArr.map((item, indexVal) => this.renderDropDownOption(item, indexVal))}
+        </select>
+      </td>
+    </tr>;
 
-  renderDropDownOption = (item, index) => {
-    return (
-      <option key={index}>
-        {item.name}
-      </option>
-    );
-  };
+  _renderDropDownOption = (item, index) =>
+    <option key={index}>
+      {item.name}
+    </option>;
 
   render() {
     return (
       <div className="container">
         <button onClick={this._handleLogout}>Logout</button>
 
-        {/*{!this.state.loading && <div className="list-group">
-             {this.state.accountList.map((account, index) => {
-             return <AccountRow key={index} account={account}/>;
-             })
-             }
-             </div>}*/}
-
-        {console.log('Mapping ' + this.state.accountMapping)}
+        {console.log(`Mapping ${this.state.accountMapping}`) // eslint-disable-line
+        }
 
         <div>
           <Table responsive>
@@ -157,9 +143,7 @@ class Mapping extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.accountMapping.map((item, index) => {
-                return this.renderRow(item, index);
-              })}
+              {this.state.accountMapping.map((item, index) => this._renderRow(item, index))}
             </tbody>
           </Table>
 

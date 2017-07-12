@@ -1,5 +1,5 @@
 // this method will use to common access url and manage error
-export function handleFetch(url, options) {
+function handleFetch(url, options) {
   return new Promise((resolve, reject) => {
     let statusCode;
     fetch(url, options)
@@ -8,12 +8,10 @@ export function handleFetch(url, options) {
         if (!response.error) {
           if (options.mode === 'no-cors') {
             return resolve(response);
-          } else {
-            return response.json();
           }
-        } else {
-          return reject(response.error);
+          return response.json();
         }
+        return reject(response.error);
       })
       .then(payload => {
         if (statusCode !== 200) {
@@ -21,8 +19,8 @@ export function handleFetch(url, options) {
         }
         return resolve(payload);
       })
-      .catch(error => {
-        return reject(error);
-      });
+      .catch(error => reject(error));
   });
 }
+
+export default { handleFetch };

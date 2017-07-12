@@ -1,21 +1,16 @@
-import React, { Component } from 'react';
-import { API_CONST, ENVIRONMENT } from '../../common/constants';
+import React, { Component, PropTypes } from 'react';
 import { browserHistory } from 'react-router';
+import { API_CONST, ENVIRONMENT } from '../../common/constants';
 
 class App extends Component {
-  goTo(route) {
-    this.props.history.replace(`/${route}`);
-  }
-
   componentDidMount() {
     const { location } = this.props;
-    let token = location.query.access_token || localStorage.getItem('accessToken');
-    let instanceUrl = location.query.instance_url || localStorage.getItem('instanceUrl');
+    const token = location.query.access_token || localStorage.getItem('accessToken');
+    const instanceUrl = location.query.instance_url || localStorage.getItem('instanceUrl');
 
     if (token) {
       localStorage.setItem('accessToken', token);
       localStorage.setItem('instanceUrl', instanceUrl);
-      console.log(localStorage.getItem('instanceUrl'));
       browserHistory.replace('/home');
     } else {
       window.location.href = `${ENVIRONMENT.API_ROOT}${API_CONST.LOGIN}`;
@@ -30,5 +25,13 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  location: PropTypes.string
+};
+
+App.defaultProps = {
+  location: ''
+};
 
 export default App;

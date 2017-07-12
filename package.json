@@ -17,6 +17,7 @@
     "express": "^4.14.0",
     "express-session": "^1.15.3",
     "heroku-node-settings": "^1.0.2",
+    "history": "^4.6.3",
     "jsforce": "^1.8.0",
     "knex": "^0.13.0",
     "map-filter-reduce": "^3.0.3",
@@ -41,6 +42,7 @@
   },
   "lint-staged": {
     "src/**/*.js": [
+      "npm run lint",
       "prettier --print-width=200 --single-quote --write",
       "git add"
     ]
@@ -55,19 +57,21 @@
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "test": "mocha test",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "lint": "eslint ./src/",
+    "lint-fix": "eslint --fix ./src/"
   },
   "proxy": "http://0.0.0.0:3001",
-  "eslintConfig": {
-    "extends": "./node_modules/react-scripts/config/eslint.js",
-    "env": {
-      "mocha": true
-    },
-    "rules": {
-      "strict": 0
-    }
-  },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "7",
+    "babel-preset-es2017": "^6.24.1",
+    "eslint": "3.x",
+    "eslint-config-airbnb": "^15.0.2",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.1.0",
     "husky": "^0.14.2",
     "lint-staged": "^4.0.0",
     "prettier": "^1.5.2"

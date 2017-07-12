@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import AccountRow from '../Common/AccountRow';
 import { browserHistory } from 'react-router';
+import AccountRow from '../Common/AccountRow';
 import { getAccountList } from '../../common/services/restclient';
 
 class Home extends Component {
@@ -10,7 +10,6 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    console.log(JSON.stringify(this.props));
     this._getAccountList();
   }
 
@@ -22,16 +21,14 @@ class Home extends Component {
   _getAccountList = () => {
     getAccountList()
       .then(response => {
-        console.log(response);
-
-        let state = Object.assign({}, this.state);
+        const state = Object.assign({}, this.state);
         state.loading = false;
         if (response !== 'undefine' && response !== null && response.records !== 'undefine') state.accountList = response.records;
 
         this.setState(state);
       })
       .catch(error => {
-        this.setState({ loading: false });
+        this.setState({ error, loading: false });
       });
   };
 
@@ -42,9 +39,7 @@ class Home extends Component {
 
         {!this.state.loading &&
           <div className="list-group">
-            {this.state.accountList.map((account, index) => {
-              return <AccountRow key={index} account={account} />;
-            })}
+            {this.state.accountList.map(account => <AccountRow account={account} />)}
           </div>}
       </div>
     );
