@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { browserHistory } from 'react-router';
-import { API_CONST, ENVIRONMENT } from '../../common/constants';
+import { API_CONST } from '../../common/constants';
 
 class App extends Component {
   componentDidMount() {
@@ -13,7 +13,7 @@ class App extends Component {
       localStorage.setItem('instanceUrl', instanceUrl);
       browserHistory.replace('/home');
     } else {
-      window.location.href = `${ENVIRONMENT.API_ROOT}${API_CONST.LOGIN}`;
+      window.location.href = `${process.env.API_ROOT}${API_CONST.LOGIN}`;
     }
   }
 
