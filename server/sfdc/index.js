@@ -1,6 +1,10 @@
+const pgclient = require('./pgclient')
+
 const jsforce = require('jsforce');
 
 getAccountList = (accessToken='',instanceUrl='') => {
+
+    pgclient.getFildsMapping();
 
     return new Promise(function (resolve, reject) {
         var conn = new jsforce.Connection({
@@ -81,6 +85,8 @@ getContacts = (conn) => {
             });
     });
 }
+
+
 
 
 authUserSfdc = (username = '', password = '') => {
