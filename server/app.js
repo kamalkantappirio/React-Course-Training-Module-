@@ -5,7 +5,10 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
-const account = require('./sfdc')
+const session = require('express-session');
+const api = require('./routes');
+const account = require('./sfdc');
+
 require('newrelic');
 require('dotenv').config();
 const pgClient = require('./sfdc/pgclient')
@@ -52,6 +55,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.set('trust proxy', 'loopback')
 
+app.use(session({ secret: 'keyboard cat'}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
@@ -63,16 +67,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-// Passport session setup.
-//   To support persistent login sessions, Passport needs to be able to
-//   serialize users into and deserialize users out of the session.  Typically,
-//   this will be as simple as storing the user ID when serializing, and finding
-//   the user by ID when deserializing.  However, since this example does not
-//   have a database of user records, the complete Salesforce profile is
-//   serialized and deserialized.
-passport.serializeUser(function(user, done) {
-    done(null, user);
-});
+app.use('/api', api);
 
 passport.deserializeUser(function(obj, done) {
     done(null, obj);
