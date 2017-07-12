@@ -14,3 +14,4 @@ yarn-error.log*
 src/**/*.css
 package-lock.json
 newrelic_agent.log*
+.env
