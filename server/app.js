@@ -156,7 +156,7 @@ app.post('/account', function(req, res){
 
 app.get('/login',function(req, res) {
 
-    passport.authenticate('forcedotcom')(req,res);
+    return passport.authenticate('forcedotcom')(req,res);
 });
 
 

@@ -17,37 +17,28 @@ const knex = require('knex')({
 
 
 getFieldsMapping=()=>{
-
-    return knex.select('id','field','mapping','datatype')
-        .from('account');
-
-
-
+    return knex.select('id', 'field', 'mapping', 'datatype').from('account');
 }
-
 
 updateMapping=(records)=>{
 
+    let updateQuery = [
+            'INSERT INTO account (id, field, mapping) VALUES',
+            _.map(records, () => '(?)').join(','),
+            'ON DUPLICATE KEY UPDATE',
+            'field = VALUES(field),',
+            'mapping = VALUES(mapping)'
+        ].join(' '),
 
-        let updateQuery = [
-                'INSERT INTO account (id, field, mapping) VALUES',
-                _.map(records, () => '(?)').join(','),
-                'ON DUPLICATE KEY UPDATE',
-                'field = VALUES(field),',
-                'mapping = VALUES(mapping)'
-            ].join(' '),
+        vals = [];
 
-            vals = [];
+    (records).map(record => {
+        vals.push(record.id);
+        vals.push(record.field);
+        vals.push(record.mapping);
+    });
 
-        (records).map(record => {
-            vals.push(record.id);
-            vals.push(record.field);
-            vals.push(record.mapping);
-        });
-
-        return knex.raw(updateQuery, vals);
-
-
+    return knex.raw(updateQuery, vals);
 }
 
 updateFieldsMapping=(id,field,mapping)=>{
@@ -58,9 +49,6 @@ updateFieldsMapping=(id,field,mapping)=>{
             field: field,
             mapping: mapping
         })
-
-
-
 }
 
 

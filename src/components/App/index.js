@@ -1,21 +1,16 @@
 import React, {Component} from 'react';
-import {API_CONST,ENVIRONMENT} from '../../common/constants';
+import { API_CONST, ENVIRONMENT } from '../../common/constants';
 import {browserHistory} from 'react-router'
 
 class App extends Component {
 
-
-  state = {
-  }
-
+  state = {}
 
     componentDidMount() {
-
-      const { location } = this.props;
-
-
+        const { location } = this.props;
         let token = location.query.access_token || localStorage.getItem('accessToken');
         let instanceUrl=location.query.instance_url || localStorage.getItem('instanceUrl');
+
         if (token) {
             localStorage.setItem("accessToken", token);
             localStorage.setItem("instanceUrl", instanceUrl);
@@ -29,7 +24,6 @@ class App extends Component {
 
     render() {
         return (
-
             <div className="container">
               {/* <Header auth={this.props.route.auth} />*/}
             </div>
@@ -39,14 +33,6 @@ class App extends Component {
 
 
 
-}
-
-function mapStateToProps(state) {
-    const { routing } = state;
-    return {
-
-        routing
-    };
 }
 
 export default App;

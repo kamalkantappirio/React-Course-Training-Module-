@@ -8,7 +8,11 @@ export function handleFetch(url, options) {
                     console.log(response);
                     statusCode = response.status;
                     if(!response.error) {
-                        return response.json();
+                        if(options.mode === 'no-cors'){
+                            return resolve(response);
+                        } else {
+                            return response.json();
+                        }
                     } else{
                         return reject(response.error);
                     }
