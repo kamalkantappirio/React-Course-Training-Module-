@@ -1,5 +1,5 @@
 // this method will use to common access url and manage error
-function handleFetch(url, options) {
+export function handleFetch(url, options) {
   return new Promise((resolve, reject) => {
     let statusCode;
     fetch(url, options)
@@ -22,5 +22,3 @@ function handleFetch(url, options) {
       .catch(error => reject(error));
   });
 }
-
-export default { handleFetch };

@@ -1,6 +1,5 @@
 // server/app.js
 const express = require('express');
-const morgan = require('morgan');
 const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
@@ -68,6 +67,10 @@ app.use(function(req, res, next) {
 });
 
 app.use('/api', api);
+
+passport.serializeUser(function(user, done) {
+    done(null, user);
+});
 
 passport.deserializeUser(function(obj, done) {
     done(null, obj);
@@ -156,9 +159,6 @@ app.get('/login',function(req, res) {
 
 
 app.get('/mapping',function(req, res) {
-
-
-
     const aMapping = pgClient.getFieldsMapping();
 
     aMapping.then(function(rows) {
