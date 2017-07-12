@@ -216,7 +216,6 @@ app.get('/auth/forcedotcom', passport.authenticate('forcedotcom'), function(req,
     // The request will be redirected to Force.com for authentication, so this
     // function will not be called.
 });
-
 // GET /auth/forcedotcom/callback
 //   PS: This MUST match what you gave as 'callback_url' earlier
 //   Use passport.authenticate() as route middleware to authenticate the

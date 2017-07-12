@@ -1,7 +1,3 @@
-/**
- * Created by lokendra on 12/07/17.
- */
-
 const knex = require('knex')({
     client: 'pg',
     connection: {

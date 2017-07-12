@@ -95,9 +95,6 @@ authUserSfdc = (username = '', password = '') => {
 
         conn.login(username, password, function(err, userInfo) {
 
-
-
-
             if (err) {
                 return reject(userInfo);
             }
@@ -106,7 +103,6 @@ authUserSfdc = (username = '', password = '') => {
             // Save them to establish connection next time.
             userInfo.accessToken = conn.accessToken;
             userInfo.instanceUrl = conn.instanceUrl;
-
 
             return resolve(userInfo);
 
