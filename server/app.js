@@ -118,7 +118,7 @@ app.get('/auth/forcedotcom/callback', passport.authenticate('forcedotcom', {
     failureRedirect: WEB_ROOT+'/'
 }), function(req, res) {
     console.log(WEB_ROOT)
-    res.redirect('/?access_token='+res.req.user.params.access_token+'&instance_url='+res.req.user.params.instance_url);
+    res.redirect(WEB_ROOT + '/?access_token='+res.req.user.params.access_token+'&instance_url='+res.req.user.params.instance_url);
 });
 
 app.get('/logout', function(req, res) {
