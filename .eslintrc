@@ -1,5 +1,22 @@
 {
+  "parser": "babel-eslint",
   "extends": [
-    "prettier"
-  ]
+    "airbnb"
+  ],
+  "globals": { 
+    "fetch": false,
+    "localStorage": false,
+    "window": false,
+    "document": false,
+    "location": false
+  },
+  "rules": {
+    "strict": 0,
+    "import/prefer-default-export": 0,
+    "no-underscore-dangle": 0,
+    "max-len": 0,
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "comma-dangle": 0,
+    "prefer-arrow-callback": ["error", { "allowUnboundThis": false }]
+  }
 }

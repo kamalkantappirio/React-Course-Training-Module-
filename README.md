@@ -1,48 +1,14 @@
-# Using `create-react-app` with React Router + Express.js
+## MHG Bluesky
 
-**:warning: This is outdated, please refer to the official and new [react-router docs](https://reacttraining.com/react-router/)**
+create a .env file in the root of the project and put the following in
 
-See : https://medium.com/@patriciolpezjuri/using-create-react-app-with-react-router-express-js-8fa658bf892d
-
-## Development
-
-Clone this repository:
-
-```sh
-git clone https://github.com/mrpatiwi/routed-react.git
-cd routed-react
 ```
-
-Install dependencies:
-
-```sh
-npm install
-```
-
-Start the project at [`http://localhost:3000`](http://localhost:3000).
-
-```sh
-npm start
-```
-
-## Running with Docker
-
-Be sure to install Docker and start a Docker-machine if necessary.
-
-Let's create an image named `routed-react`:
-
-```sh
-docker build -t routed-react .
-```
-
-Finally, start a container named `routed-react-instance` at port `80`.
-
-```sh
-docker run -p 80:9000 --name routed-react-instance routed-react
-```
-
-## Testing
-
-```sh
-npm test
+DANGEROUSLY_DISABLE_HOST_CHECK=true
+NEW_RELIC_LICENSE_KEY=ab6b7bfcd75ada2296ba426381c368648bf08a34
+SFDC_LOGIN_URL=https://login.salesforce.com
+API_ROOT=https://localhost:3000
+CLIENT_ID=3MVG9CEn_O3jvv0wXLYYwjX2Kqgf9dsyW0OeHXaGoBwDNeWEJh8YQX9iwXgo7YUUY5GYXrfvoUr_uNwJ0sykd
+CALLBACK_URL=http://localhost:3000/callback
+SECRET=5206129170910061874
+WEB_ROOT=http://localhost:3000
 ```

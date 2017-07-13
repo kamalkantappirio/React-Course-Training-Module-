@@ -1,14 +1,11 @@
 // src/components/NotFound/index.js
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import classnames from 'classnames';
 
 import './style.css';
 
 class NotFound extends Component {
-  static propTypes = {}
-  static defaultProps = {}
-  defaultProps = {};
-  state = {}
+  state = {};
 
   render() {
     const { className, ...props } = this.props;
@@ -21,5 +18,13 @@ class NotFound extends Component {
     );
   }
 }
+
+NotFound.propTypes = {
+  className: PropTypes.string.required
+};
+
+NotFound.defaultProps = {
+  className: ''
+};
 
 export default NotFound;

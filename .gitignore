@@ -13,3 +13,5 @@ yarn-error.log*
 /.changelog
 src/**/*.css
 package-lock.json
+newrelic_agent.log*
+.env
