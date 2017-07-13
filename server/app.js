@@ -134,5 +134,4 @@ app.get('/[^\.]+$', function(req, res){
     .sendFile(__dirname + '/build/index.html');
 });
 
-
 module.exports = app;
