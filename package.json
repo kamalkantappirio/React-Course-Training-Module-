@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "private": true,
   "engines": {
-    "node": "8.1.2"
+    "node": "8.1.4"
   },
   "dependencies": {
     "babel-preset-stage-0": "^6.24.1",
@@ -17,11 +17,20 @@
     "express": "^4.14.0",
     "express-session": "^1.15.3",
     "heroku-node-settings": "^1.0.2",
+    "heroku-proxy": "^2.1.1",
+    "history": "^4.6.3",
     "jsforce": "^1.8.0",
+    "knex": "^0.13.0",
     "map-filter-reduce": "^3.0.3",
+    "method-override": "^2.3.9",
     "morgan": "^1.7.0",
     "newrelic": "^1.40.0",
     "npm-run-all": "^4.0.2",
+    "passport": "^0.3.2",
+    "passport-custom": "^1.0.5",
+    "passport-forcedotcom": "^0.1.4",
+    "passport-oauth": "^1.0.0",
+    "pg": "^6.4.0",
     "promise": "^8.0.0",
     "react": "^15.2.1",
     "react-addons-css-transition-group": "^15.6.0",
@@ -34,6 +43,7 @@
   },
   "lint-staged": {
     "src/**/*.js": [
+      "npm run lint",
       "git add"
     ]
   },
@@ -47,21 +57,22 @@
     "build": "react-scripts build",
     "eject": "react-scripts eject",
     "test": "mocha test",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "lint": "eslint ./src/",
+    "lint-fix": "eslint --fix ./src/"
   },
-  "proxy": "http://0.0.0.0:3001",
-  "eslintConfig": {
-    "extends": "./node_modules/react-scripts/config/eslint.js",
-    "env": {
-      "mocha": true
-    },
-    "rules": {
-      "strict": 0
-    }
-  },
+  "proxy": "http://localhost:3001",
   "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "7",
+    "babel-preset-es2017": "^6.24.1",
+    "eslint": "3.x",
+    "eslint-config-airbnb": "^15.0.2",
+    "eslint-config-airbnb-base": "^11.2.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.1.0",
     "husky": "^0.14.2",
-    "lint-staged": "^4.0.0",
-    "prettier": "^1.5.2"
+    "lint-staged": "^4.0.0"
   }
 }

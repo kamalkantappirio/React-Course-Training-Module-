@@ -1,17 +1,11 @@
-import React, { Component } from "react";
-import { Navbar, Nav } from "reactstrap";
+import React from 'react';
+import { Navbar, Nav } from 'reactstrap';
 
-class Header extends Component {
-  render() {
-    return (
-        
-      <div>
-        <Navbar inverse>
-          <Nav />
-        </Navbar>
-      </div>
-    );
-  }
-}
+const Header = () =>
+  (<div>
+    <Navbar inverse>
+      <Nav />
+    </Navbar>
+  </div>);
 
 export default Header;

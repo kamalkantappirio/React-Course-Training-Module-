@@ -1,13 +1,17 @@
-import React from "react";
-import { Router, Route } from "react-router";
+import React from 'react';
+import { Router, Route } from 'react-router';
 
-import NotFound from "./components/NotFound";
-import Home from "./components/Home";
+import App from './components/App';
+import NotFound from './components/NotFound';
+import Home from './components/Home';
+import Mapping from './components/Mapping';
 
 const Routes = props =>
-  <Router {...props}>
-    <Route path="/" component={Home} />
+  (<Router {...props}>
+    <Route path="/" component={App} />
+    <Route path="/home" component={Home} />
+    <Route path="/mapping" component={Mapping} />
     <Route path="*" component={NotFound} />
-  </Router>;
+  </Router>);
 
 export default Routes;
