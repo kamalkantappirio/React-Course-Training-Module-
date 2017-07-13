@@ -17,6 +17,7 @@
     "express": "^4.14.0",
     "express-session": "^1.15.3",
     "heroku-node-settings": "^1.0.2",
+    "heroku-proxy": "^2.1.1",
     "history": "^4.6.3",
     "jsforce": "^1.8.0",
     "knex": "^0.13.0",
@@ -60,7 +61,7 @@
     "lint": "eslint ./src/",
     "lint-fix": "eslint --fix ./src/"
   },
-  "proxy": "http://0.0.0.0:3001",
+  "proxy": "http://localhost:3001",
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "7",

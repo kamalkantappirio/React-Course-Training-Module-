@@ -7,6 +7,7 @@ const app = express();
 const session = require('express-session');
 const api = require('./routes');
 const account = require('./sfdc');
+const herokuProxy = require('heroku-proxy');
 
 require('newrelic');
 require('dotenv').config();
@@ -66,7 +67,7 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use('/api', api);
+// app.use('/api', api);
 
 passport.serializeUser(function(user, done) {
     done(null, user);
@@ -153,7 +154,7 @@ app.post('/account', function(req, res){
 });
 
 app.get('/login',function(req, res) {
-
+    console.log('api/login')
     return passport.authenticate('forcedotcom')(req,res);
 });
 
