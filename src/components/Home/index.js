@@ -15,7 +15,15 @@ class Home extends Component {
 
   _handleLogout = () => {
     localStorage.clear();
+    localStorage.setItem('logout', true);
+    browserHistory.replace('/home');
+    this.setState({ logout: true });
+  };
+
+  _handleLogin = () => {
+    localStorage.setItem('logout', false);
     browserHistory.replace('/');
+    this.setState({ logout: false });
   };
 
   _getAccountList = () => {
@@ -35,11 +43,15 @@ class Home extends Component {
   render() {
     return (
       <div className="container">
-        <button onClick={this._handleLogout}>Logout</button>
+        {
+          (this.state.logout === true)
+            ? <button onClick={this._handleLogin}>Login</button>
+            : <button onClick={this._handleLogout}>Logout</button>
+        }
 
-        {!this.state.loading &&
+        {!this.state.loading && this.state.logout !== true &&
           <div className="list-group">
-            {this.state.accountList.map(account => <AccountRow account={account} />)}
+            {this.state.accountList.map(account => (<AccountRow key={account.Id} account={account} />))}
           </div>}
       </div>
     );

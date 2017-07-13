@@ -12,8 +12,8 @@ class App extends Component {
       localStorage.setItem('accessToken', token);
       localStorage.setItem('instanceUrl', instanceUrl);
       browserHistory.replace('/home');
-    } else {
-      window.location.href = `${process.env.API_ROOT}${API_CONST.LOGIN}`;
+    } else if (localStorage.getItem('logout') !== true) {
+      window.location.href = `${window.location.protocol}//${document.domain}:3001${API_CONST.LOGIN}`;
     }
   }
 
@@ -27,7 +27,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-  location: PropTypes.string
+  location: PropTypes.shape({})
 };
 
 App.defaultProps = {

@@ -40,6 +40,6 @@ export function userLogin(username, password) {
 }
 
 export function authLogin() {
-  const url = `${process.env.API_ROOT}${API_CONST.LOGIN}`;
-  return window.open(url, '_self');
+  const url = `${API_CONST.LOGIN}`;
+  return window.open(process.env.API_ROOT + url, '_self');
 }

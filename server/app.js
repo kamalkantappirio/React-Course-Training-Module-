@@ -12,7 +12,7 @@ require('newrelic');
 require('dotenv').config();
 const pgClient = require('./sfdc/pgclient')
 
-const WEB_ROOT=`${process.env.WEB_ROOT}`;
+const WEB_ROOT = process.env.WEB_ROOT;
 
 const passport = require('passport'),
     util = require('util'),
