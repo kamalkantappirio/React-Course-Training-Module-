@@ -1,6 +1,6 @@
 const passport = require('passport');
 const ForceDotComStrategy = require('passport-forcedotcom').Strategy;
-
+require('dotenv').config();
 //----------------------------------------------------------------------------
 // REPLACE THE BELOW SETTING TO MATCH YOUR SALESFORCE CONNECTED-APP'S SETTINGS
 //----------------------------------------------------------------------------
@@ -22,7 +22,7 @@ const CF_CLIENT_SECRET = '8328306587854636993';
 //
 //   app.get('/auth/forcedotcom/callback, callback))
 //
-const CF_CALLBACK_URL = 'http://localhost:3001/auth/forcedotcom/callback';
+const CF_CALLBACK_URL = `http://${process.env.WEB_ROOT}/auth/forcedotcom/callback`
 
 
 // Salesforce Authorization URL (this defaults to:
