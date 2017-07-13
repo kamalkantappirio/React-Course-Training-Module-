@@ -49,7 +49,7 @@
   },
   "scripts": {
     "start-js": "react-scripts start",
-    "start": "concurrently \"PORT=3001 node server\"  \"NODE_ENV=development npm-run-all -p start-js\"",
+    "start": "concurrently \"PORT=3001 node server\"  \"NODE_ENV=production npm-run-all -p start-js\"",
     "start:dev": "concurrently \"PORT=3001 node server\"  \"NODE_ENV=development npm-run-all -p start-js\"",
     "postinstall": "react-scripts build",
     "start:client": "react-scripts start",

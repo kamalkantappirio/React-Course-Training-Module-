@@ -10,15 +10,12 @@ const account = require('./sfdc');
 const herokuProxy = require('heroku-proxy');
 const pgClient = require('./sfdc/pgclient')
 const passport = require('passport');
-// const WEB_ROOT = process.env.WEB_ROOT;
-
-const {
-    WEB_ROOT
-} = process.env;
 
 require('./connectors/passport-sfdc');
 require('newrelic');
 require('dotenv').config();
+
+const WEB_ROOT = process.env.WEB_ROOT;
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -118,6 +115,7 @@ app.get('/auth/forcedotcom', passport.authenticate('forcedotcom'), function(req,
 app.get('/auth/forcedotcom/callback', passport.authenticate('forcedotcom', {
     failureRedirect: WEB_ROOT+'/'
 }), function(req, res) {
+    console.log(WEB_ROOT)
     res.redirect(WEB_ROOT+'/?access_token='+res.req.user.params.access_token+'&instance_url='+res.req.user.params.instance_url);
 });
 
