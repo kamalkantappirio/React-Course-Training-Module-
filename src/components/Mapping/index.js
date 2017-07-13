@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { Table, Button } from 'reactstrap';
-import { getAccountMapping } from '../../common/services/restclient';
+import { getAccountMapping,updateAccountMapping } from '../../common/services/restclient';
 
 class Mapping extends Component {
   state = {
@@ -78,13 +78,25 @@ class Mapping extends Component {
      * Method call when user press submit button.
      **/
   onSubmitBtnClick = () => {
-    console.log(this.state.accountMapping); // eslint-disable-line
+      this._updateAccountObject();
   };
 
+  _updateAccountObject=()=>{
+
+    updateAccountMapping(this.state.accountMapping).then((response) => {
+        this.setState({loading: false });
+
+        alert('Mapping successfully updated..!');
+    })
+        .catch((error) => {
+
+            this.setState({ error, loading: false });
+        });
+  }
   _getAccountObject = () => {
     getAccountMapping()
       .then((response) => {
-        // console.log(response);
+         console.log(response);
 
         const state = Object.assign({}, this.state);
         state.loading = false;
@@ -115,15 +127,13 @@ class Mapping extends Component {
       </td>
       <td>
         <select className="selectpicker" onChange={event => this.onDropDownChange(rowData.id, event.target.value)}>
-          {this.state.fieldsArr.map((item, indexVal) => this.renderDropDownOption(item, indexVal))}
+          {this.state.fieldsArr.map((item, indexVal) => this._renderDropDownOption(item, indexVal))}
         </select>
       </td>
     </tr>);
 
   _renderDropDownOption = (item, index) =>
-    (<option key={index}>
-      {item.name}
-    </option>);
+    (<option key={index}>{item.name}</option>);
 
   render() {
     return (

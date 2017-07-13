@@ -23,10 +23,10 @@ const passport = require('passport'),
 //----------------------------------------------------------------------------
 
 // Set Force.com app's clientID
-const CF_CLIENT_ID = '3MVG9ZL0ppGP5UrC80AgNht24mMAjVhKNz_9ZNk1e7RbnQD3XHeVD7FWBwshwXinEYUGozdKTH2CcxvH0MjaI';
+const CF_CLIENT_ID = '3MVG9szVa2RxsqBZSyEwEVn4wx1hlPy_E.V4nuk7m2pi8r_.tHnrYsALW1eFEUceofoN4RIY3lWqM527onZgf';
 
 // Set Force.com app's clientSecret
-const CF_CLIENT_SECRET = '8328306587854636993';
+const CF_CLIENT_SECRET = '1720521129370081950';
 
 // Note: You should have a app.get(..) for this callback to receive callback
 // from Force.com
@@ -139,10 +139,12 @@ app.post('/account', function(req, res){
   const instanceUrl = req.body.instanceUrl;
 
 
-  console.log(instanceUrl);
-  const aDetail = account.getAccountList(accessToken, instanceUrl);
 
-  aDetail.then(response => {
+  console.log(instanceUrl);
+//  const aDetail = account.getAccountList(accessToken, instanceUrl);
+    const aDetail = account.getAccountListWithMapping(accessToken, instanceUrl,req.body.param);
+
+   aDetail.then(response => {
     console.log(response);
     return  res.status(200).json(response)
   })
@@ -171,22 +173,34 @@ app.get('/mapping',function(req, res) {
 
 });
 
+/*app.get('/mapping/:field',function(req, res) {
+    console.log(req);
+    const aMapping = pgClient.getMapping(req.params.field);
+
+    aMapping.then(function(rows) {
+        return res.json(rows);
+    })
+        .catch(function(error) {
+            console.error(error)
+            return error;
+        });
+
+});*/
 
 app.post('/mapping',function(req, res) {
 
 
-
     console.log(req.body);
     const aMapping = pgClient.updateMapping(req.body);
+
     aMapping.then(response => {
 
-     return  res.status(200).json('success')
-     })
-     .catch(error => {
-     console.log(error);
-     return error;
-     });
+        return  res.status(200).json('success');
+    })
 });
+
+
+
 
 
 app.post('/login', function(req, res){
@@ -225,7 +239,7 @@ app.get('/auth/forcedotcom', passport.authenticate('forcedotcom'), function(req,
 app.get('/auth/forcedotcom/callback', passport.authenticate('forcedotcom', {
     failureRedirect: WEB_ROOT+'/'
 }), function(req, res) {
-    res.redirect(WEB_ROOT+'/?access_token='+res.req.user.params.access_token+'&instance_url='+res.req.user.params.instance_url);
+    res.redirect(WEB_ROOT+'/?access_token='+res.req.user.params.access_token+'&instance_url='+res.req.user.params.instance_url+'&user_id='+res.req.user.params.id);
 });
 
 app.get('/logout', function(req, res) {

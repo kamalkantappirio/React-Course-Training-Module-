@@ -1,6 +1,8 @@
-const pgclient = require('./pgclient');
+const pgClient = require('./pgclient')
 
 const jsforce = require('jsforce');
+const Promise = require('bluebird');
+
 
 getAccountList = (accessToken='',instanceUrl='') => {
     return new Promise(function (resolve, reject) {
@@ -18,6 +20,104 @@ getAccountList = (accessToken='',instanceUrl='') => {
             });
     })
 }
+
+
+
+getAccountListWithMapping = (accessToken='',instanceUrl='',param=[]) => {
+
+
+
+    if(param.length===0)
+    {
+        return new Promise(function (resolve, reject) {
+            var conn = new jsforce.Connection({
+                instanceUrl :instanceUrl,
+                accessToken :accessToken
+            });
+
+            conn.query("SELECT Id, Name, BillingAddress, Phone, Industry FROM Account LIMIT 20")
+                .then(response => {
+                    return resolve(response);
+
+                }, function (err) {
+                    return reject(err);
+                });
+
+        });
+    }
+    else {
+
+
+
+
+
+         return   pgClient.getMapping(param).then(function(rows) {
+
+             console.log(rows);
+
+             let param=[];
+             rows.forEach(field=>{
+                 console.log(field.mapping);
+                 param.push(field.mapping);
+             });
+
+             return new Promise(function (resolve, reject) {
+                 var conn = new jsforce.Connection({
+                     instanceUrl :instanceUrl,
+                     accessToken :accessToken
+                 });
+
+                 conn.query("SELECT "+param.join(",")+" FROM Account LIMIT 20")
+                     .then(response => {
+                         return resolve(response);
+
+                     }, function (err) {
+                         return reject(err);
+                     });
+
+             });
+
+         })
+             .catch(function(error) {
+                 console.error(error)
+                 return error;
+             });;
+
+
+    /*param.map(row=>{
+
+
+        fields.push(pgClient.getMapping(row.field));
+
+/!*        const aMapping = pgClient.getMapping(row.field);
+
+        aMapping.then(function(rows) {
+            fields.push(rows[0].mapping);
+            console.log(rows[0].mapping);
+
+        })
+            .catch(function(error) {
+                console.error(error)
+                return error;
+            });*!/
+
+    })*/
+
+
+
+
+       /* conn.query("SELECT Id, Name, BillingAddress, Phone, Industry FROM Account LIMIT 20")
+            .then(response => {
+                return resolve(response);
+
+            }, function (err) {
+                return reject(err);
+            });*/
+
+
+    }
+}
+
 
 // Call Org using saved instance and access tokens
 getCurrentConnection = (instanceUrl, accessToken) => {
@@ -117,6 +217,7 @@ module.exports = {
     getConnection,
     getAccountList,
     authUserSfdc,
-    getContacts
+    getContacts,
+    getAccountListWithMapping
 }
 

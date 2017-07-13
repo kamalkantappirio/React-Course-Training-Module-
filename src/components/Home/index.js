@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import AccountRow from '../Common/AccountRow';
-import { getAccountList } from '../../common/services/restclient';
+import { getAccountList,getAccountListWithMapping } from '../../common/services/restclient';
 
 class Home extends Component {
   state = {
@@ -27,7 +27,7 @@ class Home extends Component {
   };
 
   _getAccountList = () => {
-    getAccountList()
+      getAccountListWithMapping()
       .then((response) => {
         const state = Object.assign({}, this.state);
         state.loading = false;
