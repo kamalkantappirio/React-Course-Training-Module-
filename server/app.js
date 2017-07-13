@@ -8,48 +8,17 @@ const session = require('express-session');
 const api = require('./routes');
 const account = require('./sfdc');
 const herokuProxy = require('heroku-proxy');
+const pgClient = require('./sfdc/pgclient')
+const passport = require('passport');
+// const WEB_ROOT = process.env.WEB_ROOT;
 
+const {
+    WEB_ROOT
+} = process.env;
+
+require('./connectors/passport-sfdc');
 require('newrelic');
 require('dotenv').config();
-const pgClient = require('./sfdc/pgclient')
-
-const WEB_ROOT = process.env.WEB_ROOT;
-
-const passport = require('passport'),
-    util = require('util'),
-    ForceDotComStrategy = require('passport-forcedotcom').Strategy;
-
-//----------------------------------------------------------------------------
-// REPLACE THE BELOW SETTING TO MATCH YOUR SALESFORCE CONNECTED-APP'S SETTINGS
-//----------------------------------------------------------------------------
-
-// Set Force.com app's clientID
-const CF_CLIENT_ID = '3MVG9ZL0ppGP5UrC80AgNht24mMAjVhKNz_9ZNk1e7RbnQD3XHeVD7FWBwshwXinEYUGozdKTH2CcxvH0MjaI';
-
-// Set Force.com app's clientSecret
-const CF_CLIENT_SECRET = '8328306587854636993';
-
-// Note: You should have a app.get(..) for this callback to receive callback
-// from Force.com
-//
-// For example, if your callback url is:
-//
-//   https://localhost:3000/auth/forcedotcom/callback
-//
-// then, you should have a HTTP GET endpoint like:
-//
-//   app.get('/auth/forcedotcom/callback, callback))
-//
-const CF_CALLBACK_URL = 'http://localhost:3001/auth/forcedotcom/callback';
-
-
-// Salesforce Authorization URL (this defaults to:
-// https://login.salesforce.com/services/oauth2/authorize)
-const SF_AUTHORIZE_URL = 'https://login.salesforce.com/services/oauth2/authorize';
-
-// Salesforce token URL (this defaults to:
-// https://login.salesforce.com/services/oauth2/token)
-const SF_TOKEN_URL = 'https://login.salesforce.com/services/oauth2/token';
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -67,80 +36,10 @@ app.use(function(req, res, next) {
     next();
 });
 
-// app.use('/api', api);
-
-passport.serializeUser(function(user, done) {
-    done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
-});
-
-// Use the ForceDotComStrategy within Passport.
-//   Strategies in Passport require a `verify` function, which accept
-//   credentials (in this case, an accessToken, refreshToken, and Salesforce
-//   profile), and invoke a callback with a user object.
-const sfStrategy = new ForceDotComStrategy({
-    clientID: CF_CLIENT_ID,
-    clientSecret: CF_CLIENT_SECRET,
-    callbackURL: CF_CALLBACK_URL,
-    authorizationURL: SF_AUTHORIZE_URL,
-    tokenURL: SF_TOKEN_URL
-}, function(accessToken, refreshToken, profile, done) {
-
-    // asynchronous verification, for effect...
-    process.nextTick(function() {
-
-       // console.log(accessToken);
-
-        // To keep the example simple, the user's forcedotcom profile is returned to
-        // represent the logged-in user.  In a typical application, you would want
-        // to associate the forcedotcom account with a user record in your database,
-        // and return that user instead.
-        //
-        // We'll remove the raw profile data here to save space in the session store:
-        delete profile._raw;
-
-        return done(null,accessToken);
-    });
-});
-
-
-/*const sfStrategy = new CustomStrategy({
-    clientID: CF_CLIENT_ID,
-    clientSecret: CF_CLIENT_SECRET,
-    callbackURL: CF_CALLBACK_URL,
-    authorizationURL: SF_AUTHORIZE_URL,
-    tokenURL: SF_TOKEN_URL
-}, function(accessToken, refreshToken, profile, done) {
-
-    // asynchronous verification, for effect...
-    process.nextTick(function() {
-
-        // console.log(accessToken);
-
-        // To keep the example simple, the user's forcedotcom profile is returned to
-        // represent the logged-in user.  In a typical application, you would want
-        // to associate the forcedotcom account with a user record in your database,
-        // and return that user instead.
-        //
-        // We'll remove the raw profile data here to save space in the session store:
-        delete profile._raw;
-
-        return done(null,accessToken);
-    });
-});*/
-
-
-passport.use(sfStrategy);
 app.post('/account', function(req, res){
 
   const accessToken = req.body.accessToken;
   const instanceUrl = req.body.instanceUrl;
-
-
-  console.log(instanceUrl);
   const aDetail = account.getAccountList(accessToken, instanceUrl);
 
   aDetail.then(response => {
@@ -165,19 +64,14 @@ app.get('/mapping',function(req, res) {
     aMapping.then(function(rows) {
         return res.json(rows);
     })
-        .catch(function(error) {
-            console.error(error)
-            return error;
-        });
-
+    .catch(function(error) {
+        console.error(error)
+        return error;
+    });
 });
 
 
 app.post('/mapping',function(req, res) {
-
-
-
-    console.log(req.body);
     const aMapping = pgClient.updateMapping(req.body);
     aMapping.then(response => {
 
@@ -191,8 +85,6 @@ app.post('/mapping',function(req, res) {
 
 
 app.post('/login', function(req, res){
-
-    console.log(req.body);
     const username = req.body.username;
     const password = req.body.password;
 
@@ -202,10 +94,10 @@ app.post('/login', function(req, res){
         console.log(response);
         return  res.status(200).json(response)
     })
-        .catch(error => {
-            console.log(error);
-            return error;
-        });
+    .catch(error => {
+        console.log(error);
+        return error;
+    });
 })
 
 // GET /auth/forcedotcom
@@ -233,7 +125,6 @@ app.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-//app.listen(3001);
 // Serve static assets
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
