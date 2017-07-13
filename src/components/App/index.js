@@ -13,7 +13,7 @@ class App extends Component {
       localStorage.setItem('instanceUrl', instanceUrl);
       browserHistory.replace('/home');
     } else if (localStorage.getItem('logout') !== true) {
-      window.location.href = `${window.location.protocol}//${document.domain}:3001${API_CONST.LOGIN}`;
+      window.location.href = `${API_CONST.LOGIN}`;
     }
   }
 
