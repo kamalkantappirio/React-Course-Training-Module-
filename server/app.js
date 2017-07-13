@@ -10,7 +10,7 @@ const account = require('./sfdc');
 const herokuProxy = require('heroku-proxy');
 const pgClient = require('./sfdc/pgclient')
 const passport = require('passport');
-
+// const passportSFDC = require('./connectors/passport-sfdc');
 require('./connectors/passport-sfdc');
 require('newrelic');
 require('dotenv').config();
@@ -25,6 +25,8 @@ app.use(session({ secret: 'keyboard cat'}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
+
+app.use('/api', api);
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
