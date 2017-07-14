@@ -1,5 +1,3 @@
-/* eslint-disable no-useless-escape,no-unused-vars */
-// server/app.js
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -12,7 +10,7 @@ const account = require('./sfdc');
 const herokuProxy = require('heroku-proxy');
 const pgClient = require('./sfdc/pgclient')
 const passport = require('passport');
-// const passportSFDC = require('./connectors/passport-sfdc');
+
 require('./connectors/passport-sfdc');
 require('newrelic');
 require('dotenv').config();
@@ -30,73 +28,66 @@ app.use(cors());
 
 app.use('/api', api);
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "*");
-    res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
-    next();
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "*");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE, OPTIONS");
+  next();
 });
 
-app.post('/account', function(req, res){
+app.post('/account', (req, res) => {
 
   const accessToken = req.body.accessToken;
   const instanceUrl = req.body.instanceUrl;
   const aDetail = account.getAccountList(accessToken, instanceUrl);
 
-  aDetail.then(response => {
-    console.log(response);
+  aDetail.then((response) => {
     return res.status(200).json(response);
   })
-        .catch((error) => {
-          console.log(error);
-          return error;
-        });
+  .catch((error) => {
+    return error;
+  });
 });
 
 
 app.get('/login', (req, res) => passport.authenticate('forcedotcom')(req, res));
 
-app.get('/mapping',function(req, res) {
-    const aMapping = pgClient.getFieldsMapping();
+app.get('/mapping', (req, res) => {
+  const aMapping = pgClient.getFieldsMapping();
 
-    aMapping.then(function(rows) {
-        return res.json(rows);
-    })
-    .catch(function(error) {
-        console.error(error)
-        return error;
-    });
+  aMapping.then((rows) => {
+    return res.json(rows);
+  })
+  .catch((error) => {
+    return error;
+  });
 });
 
 
-app.post('/mapping',function(req, res) {
-    const aMapping = pgClient.updateMapping(req.body);
-    aMapping.then(response => {
-
-     return  res.status(200).json('success')
-     })
-     .catch(error => {
-     console.log(error);
-     return error;
-     });
+app.post('/mapping', (req, res) => {
+  const aMapping = pgClient.updateMapping(req.body);
+  aMapping.then((response) => {
+    return res.status(200).json('success')
+  })
+  .catch((error) => {
+    return error;
+  });
 });
 
 
-app.post('/login', function(req, res){
-    const username = req.body.username;
-    const password = req.body.password;
+app.post('/login', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
 
-    const aDetail = account.authUserSfdc(username, password);
+  const aDetail = account.authUserSfdc(username, password);
 
-    aDetail.then(response => {
-        console.log(response);
-        return  res.status(200).json(response)
-    })
-    .catch(error => {
-        console.log(error);
-        return error;
-    });
-})
+  aDetail.then((response) => {
+    return res.status(200).json(response);
+  })
+  .catch((error) => {
+    return error;
+  });
+});
 
 // GET /auth/forcedotcom
 //   Use passport.authenticate() as route middleware to authenticate the
@@ -114,10 +105,9 @@ app.get('/auth/forcedotcom', passport.authenticate('forcedotcom'), (req, res) =>
 //   login page.  Otherwise, the primary route function function will be called,
 //   which, in this example, will redirect the user to the home page.
 app.get('/auth/forcedotcom/callback', passport.authenticate('forcedotcom', {
-    failureRedirect: WEB_ROOT+'/'
-}), function(req, res) {
-    console.log(WEB_ROOT)
-    res.redirect(WEB_ROOT + '/?access_token='+res.req.user.params.access_token+'&instance_url='+res.req.user.params.instance_url);
+  failureRedirect: `${WEB_ROOT}/`;
+}), (req, res) => {
+  res.redirect(`${WEB_ROOT}/?access_token=${res.req.user.params.access_token}&instance_url=${res.req.user.params.instance_url}`);
 });
 
 app.get('/logout', (req, res) => {
@@ -130,7 +120,7 @@ app.use(express.static(path.resolve(__dirname, '..', 'build')));
 // Redirect all routes back to index.html, as this is simply serves up a SPA
 app.get('/[^\.]+$', (req, res) => {
   res.set('Content-Type', 'text/html')
-        .sendFile(`${__dirname}/build/index.html`);
+    .sendFile(`${__dirname}/build/index.html`);
 });
 
 module.exports = app;

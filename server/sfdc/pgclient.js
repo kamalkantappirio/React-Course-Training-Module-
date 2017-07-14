@@ -2,10 +2,10 @@
 const knex = require('knex')({
   client: 'pg',
   connection: {
-    host: 'localhost',
-    port: '5433',
+    host: '127.0.0.1',
+    port: '5432',
     user: 'postgres',
-    password: 'appirio123',
+    password: '',
     database: 'postgres'
   },
   pool: { min: 0, max: 7 }
