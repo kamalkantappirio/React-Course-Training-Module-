@@ -1,56 +1,46 @@
+/* eslint-disable array-callback-return */
 const knex = require('knex')({
-    client: 'pg',
-    connection: {
-        host : 'localhost',
-        port:'5433',
-        user : 'postgres',
-        password : 'appirio123',
-        database : 'postgres'
-    },
-    pool: { min: 0, max: 7 }
+  client: 'pg',
+  connection: {
+    host: 'localhost',
+    port: '5433',
+    user: 'postgres',
+    password: 'appirio123',
+    database: 'postgres'
+  },
+  pool: { min: 0, max: 7 }
 });
 
 
+const getFieldsMapping = () => knex.select('id', 'field', 'mapping').from('account').orderBy('id');
 
-getFieldsMapping=()=>{
-    return knex.select('id', 'field', 'mapping', 'datatype').from('account');
-}
+const getMapping = (field) => {
+  const param = [];
+  field.forEach((row) => {
+    param.push(row.field);
+  });
 
-updateMapping=(records)=>{
 
-    let updateQuery = [
-            'INSERT INTO account (id, field, mapping) VALUES',
-            _.map(records, () => '(?)').join(','),
-            'ON DUPLICATE KEY UPDATE',
-            'field = VALUES(field),',
-            'mapping = VALUES(mapping)'
-        ].join(' '),
+  return knex.select('mapping').from('account').whereIn('field', param);
+};
 
-        vals = [];
-
-    (records).map(record => {
-        vals.push(record.id);
-        vals.push(record.field);
-        vals.push(record.mapping);
+const updateFieldsMapping = (id, field, mapping) => knex('account')
+    .where('id', '=', id)
+    .update({
+      field,
+      mapping
     });
 
-    return knex.raw(updateQuery, vals);
-}
+const updateMapping = records => Promise.all(records.map((record) => {
+  updateFieldsMapping(record.id, record.field, record.mapping).then(response => response)
+            .catch(error => error);
+})).then(() => {
 
-updateFieldsMapping=(id,field,mapping)=>{
-
-    return knex('account')
-        .where('id', '==',id)
-        .update({
-            field: field,
-            mapping: mapping
-        })
-}
-
-
+});
 
 
 module.exports = {
-    getFieldsMapping,
-    updateMapping
-}
+  getFieldsMapping,
+  updateMapping,
+  getMapping
+};
