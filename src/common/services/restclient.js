@@ -71,6 +71,6 @@ export function userLogin(username, password) {
 }
 
 export function authLogin() {
-  const url = `${API_CONST.LOGIN}`;
-  return window.open(process.env.API_ROOT + url, '_self');
+  const url = `${window.location.protocol}${document.domain}:${window.location.port}${API_CONST.LOGIN}`;
+  return window.open(url, '_self');
 }

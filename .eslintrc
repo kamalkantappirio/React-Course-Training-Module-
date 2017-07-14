@@ -8,7 +8,9 @@
     "localStorage": false,
     "window": false,
     "document": false,
-    "location": false
+    "location": false,
+    "navigator": false,
+    "URL": false
   },
   "rules": {
     "strict": 0,

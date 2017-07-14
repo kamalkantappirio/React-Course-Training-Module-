@@ -1,16 +1,17 @@
-/* eslint-disable no-param-reassign */
 const passport = require('passport');
 const ForceDotComStrategy = require('passport-forcedotcom').Strategy;
-
+require('dotenv').config();
 //----------------------------------------------------------------------------
 // REPLACE THE BELOW SETTING TO MATCH YOUR SALESFORCE CONNECTED-APP'S SETTINGS
 //----------------------------------------------------------------------------
 
 // Set Force.com app's clientID
-const CF_CLIENT_ID = '3MVG9ZL0ppGP5UrC80AgNht24mMAjVhKNz_9ZNk1e7RbnQD3XHeVD7FWBwshwXinEYUGozdKTH2CcxvH0MjaI';
+// const CF_CLIENT_ID = '3MVG9ZL0ppGP5UrC80AgNht24mMAjVhKNz_9ZNk1e7RbnQD3XHeVD7FWBwshwXinEYUGozdKTH2CcxvH0MjaI';
+const CF_CLIENT_ID = '3MVG9CEn_O3jvv0wXLYYwjX2Kqgf9dsyW0OeHXaGoBwDNeWEJh8YQX9iwXgo7YUUY5GYXrfvoUr_uNwJ0sykd';
 
 // Set Force.com app's clientSecret
-const CF_CLIENT_SECRET = '8328306587854636993';
+// const CF_CLIENT_SECRET = '8328306587854636993';
+const CF_CLIENT_SECRET = '5206129170910061874';
 
 // Note: You should have a app.get(..) for this callback to receive callback
 // from Force.com
@@ -23,7 +24,7 @@ const CF_CLIENT_SECRET = '8328306587854636993';
 //
 //   app.get('/auth/forcedotcom/callback, callback))
 //
-const CF_CALLBACK_URL = 'http://localhost:3001/auth/forcedotcom/callback';
+const CF_CALLBACK_URL = `${process.env.WEB_ROOT}/auth/forcedotcom/callback`
 
 
 // Salesforce Authorization URL (this defaults to:
