@@ -10,7 +10,7 @@ const session = require('express-session');
 const api = require('./routes');
 const account = require('./sfdc');
 const herokuProxy = require('heroku-proxy');
-const pgClient = require('./sfdc/pgclient')
+const pgClient = require('./sfdc/pgclient');
 const passport = require('passport');
 // const WEB_ROOT = process.env.WEB_ROOT;
 
@@ -38,11 +38,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post('/account', function(req, res){
-
+app.post('/account', (req, res) => {
   const accessToken = req.body.accessToken;
   const instanceUrl = req.body.instanceUrl;
-  const aDetail = account.getAccountList(accessToken, instanceUrl);
+
+  const aDetail = account.getAccountListWithMapping(accessToken, instanceUrl, req.body.param);
 
   aDetail.then((response) => {
     console.log(response);
@@ -53,6 +53,7 @@ app.post('/account', function(req, res){
           return error;
         });
 });
+
 
 app.get('/login', (req, res) => passport.authenticate('forcedotcom')(req, res));
 
@@ -67,19 +68,6 @@ app.get('/mapping', (req, res) => {
         });
 });
 
-/* app.get('/mapping/:field',function(req, res) {
- console.log(req);
- const aMapping = pgClient.getMapping(req.params.field);
-
- aMapping.then(function(rows) {
- return res.json(rows);
- })
- .catch(function(error) {
- console.error(error)
- return error;
- });
-
- });*/
 
 app.post('/mapping', (req, res) => {
   console.log(req.body);
