@@ -7,11 +7,11 @@ require('dotenv').config();
 
 // Set Force.com app's clientID
 // const CF_CLIENT_ID = '3MVG9ZL0ppGP5UrC80AgNht24mMAjVhKNz_9ZNk1e7RbnQD3XHeVD7FWBwshwXinEYUGozdKTH2CcxvH0MjaI';
-const CF_CLIENT_ID = '3MVG9CEn_O3jvv0wXLYYwjX2Kqgf9dsyW0OeHXaGoBwDNeWEJh8YQX9iwXgo7YUUY5GYXrfvoUr_uNwJ0sykd';
+const CF_CLIENT_ID = process.env.CLIENT_ID;
 
 // Set Force.com app's clientSecret
 // const CF_CLIENT_SECRET = '8328306587854636993';
-const CF_CLIENT_SECRET = '5206129170910061874';
+const CF_CLIENT_SECRET = process.env.SECRET;
 
 // Note: You should have a app.get(..) for this callback to receive callback
 // from Force.com
@@ -24,7 +24,7 @@ const CF_CLIENT_SECRET = '5206129170910061874';
 //
 //   app.get('/auth/forcedotcom/callback, callback))
 //
-const CF_CALLBACK_URL = `${process.env.WEB_ROOT}/auth/forcedotcom/callback`
+const CF_CALLBACK_URL = `${process.env.WEB_ROOT}/auth/forcedotcom/callback`;
 
 
 // Salesforce Authorization URL (this defaults to:
