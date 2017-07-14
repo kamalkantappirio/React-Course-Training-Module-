@@ -12,7 +12,8 @@ class NotFound extends Component {
     return (
       <div className={classnames('NotFound', className)} {...props}>
         <h1>
-          404 <small>Not Found :(</small>
+                    404
+                    <small>Not Found :(</small>
         </h1>
       </div>
     );
