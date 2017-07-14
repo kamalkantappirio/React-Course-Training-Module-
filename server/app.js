@@ -23,10 +23,10 @@ const passport = require('passport'),
 //----------------------------------------------------------------------------
 
 // Set Force.com app's clientID
-const CF_CLIENT_ID = '3MVG9szVa2RxsqBZSyEwEVn4wx1hlPy_E.V4nuk7m2pi8r_.tHnrYsALW1eFEUceofoN4RIY3lWqM527onZgf';
+const CF_CLIENT_ID = '3MVG9ZL0ppGP5UrC80AgNht24mMAjVhKNz_9ZNk1e7RbnQD3XHeVD7FWBwshwXinEYUGozdKTH2CcxvH0MjaI';//'3MVG9szVa2RxsqBZSyEwEVn4wx1hlPy_E.V4nuk7m2pi8r_.tHnrYsALW1eFEUceofoN4RIY3lWqM527onZgf';
 
 // Set Force.com app's clientSecret
-const CF_CLIENT_SECRET = '1720521129370081950';
+const CF_CLIENT_SECRET = '8328306587854636993';//'1720521129370081950';
 
 // Note: You should have a app.get(..) for this callback to receive callback
 // from Force.com
