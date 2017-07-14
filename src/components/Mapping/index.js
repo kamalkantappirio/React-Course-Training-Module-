@@ -88,27 +88,29 @@ class Mapping extends Component {
   _updateAccountObject = () => {
     updateAccountMapping(this.state.accountMapping).then(() => {
       this.setState({ loading: false });
-
-      alert('Mapping successfully updated..!');
+      const notification = webkitNotifications.createNotification(
+        '48.png',  // icon url - can be relative
+        'MHG Bluesky',  // notification title
+        'Mapping successfully updated..!'  // notification body text
+      );
+      notification.show();
     })
-            .catch((error) => {
-              this.setState({ error, loading: false });
-            });
+    .catch((error) => {
+      this.setState({ error, loading: false });
+    });
   }
   _getAccountObject = () => {
     getAccountMapping()
-            .then((response) => {
-              console.log(response);
-
-              const state = Object.assign({}, this.state);
-              state.loading = false;
-              if (response !== 'undefine' && response !== null && response.records !== 'undefine') {
-                this.setState({ accountMapping: response });
-              }
-            })
-            .catch((error) => {
-              this.setState({ error, loading: false });
-            });
+      .then((response) => {
+        const state = Object.assign({}, this.state);
+        state.loading = false;
+        if (response !== 'undefine' && response !== null && response.records !== 'undefine') {
+          this.setState({ accountMapping: response });
+        }
+      })
+      .catch((error) => {
+        this.setState({ error, loading: false });
+      });
   };
 
   _handleLogout = () => {
@@ -120,25 +122,24 @@ class Mapping extends Component {
      * Method use for render the row for data.
      **/
   _renderRow = (rowData, index) =>
-        (<tr key={index}>
-          <td>
-            {rowData.id}
-          </td>
-          <td>
-            {rowData.field}
-          </td>
-          <td>
-            <select
-              className="selectpicker"
-              onChange={event => this.onDropDownChange(rowData.id, event.target.value)}
-            >
-              {this.state.fieldsArr.map((item, indexVal) => this._renderDropDownOption(item, indexVal))}
-            </select>
-          </td>
-        </tr>);
+    (<tr key={index}>
+      <td>
+        {rowData.id}
+      </td>
+      <td>
+        {rowData.field}
+      </td>
+      <td>
+        <select
+          className="selectpicker"
+          onChange={event => this.onDropDownChange(rowData.id, event.target.value)}
+        >
+          {this.state.fieldsArr.map((item, indexVal) => this._renderDropDownOption(item, indexVal))}
+        </select>
+      </td>
+    </tr>);
 
-  _renderDropDownOption = (item, index) =>
-        (<option key={index}>{item.name}</option>);
+  _renderDropDownOption = (item, index) => (<option key={index}>{item.name}</option>);
 
   _handleHome = () => {
     browserHistory.replace('/home');
@@ -165,8 +166,8 @@ class Mapping extends Component {
           </Table>
 
           <Button type="submit" onClick={this.onSubmitBtnClick}>
-                        Submit
-                    </Button>
+            Submit
+          </Button>
         </div>
       </div>
     );

@@ -1,9 +1,4 @@
-const express = require('express');
+// import winston from 'winston';
+// import express from 'express');
 
-const router = express.Router();
-
-router.get('/account', function(req, res){
-    console.log('here')
-});
-
-module.exports = router;
+// module.exports = router;

@@ -1,9 +1,8 @@
 /* eslint-disable no-unused-vars,no-param-reassign */
-const pgClient = require('./pgclient');
-
-const jsforce = require('jsforce');
-const Promise = require('bluebird');
-
+import winston from 'winston';
+import jsforce from 'jsforce';
+import Promise from 'bluebird';
+import pgClient from './pgclient';
 
 const getAccountList = (accessToken = '', instanceUrl = '') => new Promise((resolve, reject) => {
   const conn = new jsforce.Connection({
@@ -12,7 +11,7 @@ const getAccountList = (accessToken = '', instanceUrl = '') => new Promise((reso
   });
 
   conn.query('SELECT Id, Name, BillingAddress, Phone, Industry FROM Account LIMIT 20')
-            .then(response => resolve(response), err => reject(err));
+    .then(response => resolve(response), err => reject(err));
 });
 
 
@@ -29,13 +28,13 @@ const getAccountListWithMapping = (accessToken = '', instanceUrl = '', param = [
     });
 
     conn.query(`SELECT ${fields.join(',')} FROM Account LIMIT 20`)
-                .then(response => resolve(response), err => reject(err));
+      .then(response => resolve(response), err => reject(err));
   });
 })
-        .catch((error) => {
-          console.error(error);
-          return error;
-        });
+  .catch((error) => {
+    winston.error(error);
+    return error;
+  });
 
 
 // Call Org using saved instance and access tokens
@@ -62,7 +61,7 @@ const getConnection = (username = '', password = '') => new Promise((resolve, re
 
   conn.login(username, password, (err, userInfo) => {
     if (err) {
-      console.error(err);
+      winston.error(err);
       return reject(err);
     }
     return resolve(conn);
@@ -71,28 +70,26 @@ const getConnection = (username = '', password = '') => new Promise((resolve, re
 
 const getContacts = conn => new Promise((resolve) => {
   conn.sobject('Contact')
-            .find(
-                { 'Account.Id': '0016A000005ZLO5QAO' },
+    .find({
+      'Account.Id': '0016A000005ZLO5QAO'
+    },
     {
       Id: 1,
       Name: 1,
       CreatedDate: 1
-    }
-            )
-            .execute((err, records) => {
-              if (err) {
-                return console.error(err);
-              }
-              return resolve(records);
-            });
+    })
+    .execute((err, records) => {
+      if (err) {
+        return winston.error(err);
+      }
+      return resolve(records);
+    });
 });
 
 
 const authUserSfdc = (username = '', password = '') => new Promise((resolve, reject) => {
   const conn = new jsforce.Connection({
-            // loginUrl: process.env.SFDC_LOGIN_URL
     oauth2: {
-                // you can change loginUrl to connect to sandbox or prerelease env.
       loginUrl: 'https://login.salesforce.com',
       clientId: process.env.CLIENT_ID,
       clientSecret: process.env.SECRET,
@@ -104,16 +101,12 @@ const authUserSfdc = (username = '', password = '') => new Promise((resolve, rej
     if (err) {
       return reject(userInfo);
     }
-
-            // Now you can get the access token and instance URL information.
-            // Save them to establish connection next time.
     userInfo.accessToken = conn.accessToken;
     userInfo.instanceUrl = conn.instanceUrl;
 
     return resolve(userInfo);
   });
 });
-
 
 module.exports = {
   getCurrentConnection,

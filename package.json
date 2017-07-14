@@ -40,10 +40,11 @@
     "react-router": "^2.6.1",
     "react-router-dom": "^4.1.1",
     "react-scripts": "^1.0.7",
-    "reactstrap": "^4.6.2"
+    "reactstrap": "^4.6.2",
+    "winston": "^2.3.1"
   },
   "lint-staged": {
-    "src/**/*.js": [
+    "**/*.js": [
       "npm run lint",
       "git add"
     ]
@@ -61,8 +62,8 @@
     "eject": "react-scripts eject",
     "test": "mocha test",
     "precommit": "lint-staged",
-    "lint": "eslint ./src/",
-    "lint-fix": "eslint --fix ./src/"
+    "lint": "eslint ./",
+    "lint-fix": "eslint --fix ./"
   },
   "proxy": "http://localhost:3001",
   "devDependencies": {

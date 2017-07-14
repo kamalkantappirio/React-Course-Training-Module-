@@ -51,6 +51,7 @@ const sfStrategy = new ForceDotComStrategy({
   tokenURL: SF_TOKEN_URL
 }, (accessToken, refreshToken, profile, done) => {
     // asynchronous verification, for effect...
+  const profiles = profile;
   process.nextTick(() => {
        // console.log(accessToken);
 
@@ -60,7 +61,7 @@ const sfStrategy = new ForceDotComStrategy({
         // and return that user instead.
         //
         // We'll remove the raw profile data here to save space in the session store:
-    delete profile._raw;
+    delete profiles._raw;
 
     return done(null, accessToken);
   });
