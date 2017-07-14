@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 const passport = require('passport');
 const ForceDotComStrategy = require('passport-forcedotcom').Strategy;
 
@@ -33,25 +34,23 @@ const SF_AUTHORIZE_URL = 'https://login.salesforce.com/services/oauth2/authorize
 // https://login.salesforce.com/services/oauth2/token)
 const SF_TOKEN_URL = 'https://login.salesforce.com/services/oauth2/token';
 
-passport.serializeUser(function(user, done) {
-    done(null, user);
+passport.serializeUser((user, done) => {
+  done(null, user);
 });
 
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
 });
 
 const sfStrategy = new ForceDotComStrategy({
-    clientID: CF_CLIENT_ID,
-    clientSecret: CF_CLIENT_SECRET,
-    callbackURL: CF_CALLBACK_URL,
-    authorizationURL: SF_AUTHORIZE_URL,
-    tokenURL: SF_TOKEN_URL
-}, function(accessToken, refreshToken, profile, done) {
-
+  clientID: CF_CLIENT_ID,
+  clientSecret: CF_CLIENT_SECRET,
+  callbackURL: CF_CALLBACK_URL,
+  authorizationURL: SF_AUTHORIZE_URL,
+  tokenURL: SF_TOKEN_URL
+}, (accessToken, refreshToken, profile, done) => {
     // asynchronous verification, for effect...
-    process.nextTick(function() {
-
+  process.nextTick(() => {
        // console.log(accessToken);
 
         // To keep the example simple, the user's forcedotcom profile is returned to
@@ -60,10 +59,10 @@ const sfStrategy = new ForceDotComStrategy({
         // and return that user instead.
         //
         // We'll remove the raw profile data here to save space in the session store:
-        delete profile._raw;
+    delete profile._raw;
 
-        return done(null,accessToken);
-    });
+    return done(null, accessToken);
+  });
 });
 
 passport.use(sfStrategy);
