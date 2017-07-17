@@ -7,6 +7,7 @@
   },
   "dependencies": {
     "babel-preset-stage-0": "^6.24.1",
+    "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
     "bootstrap": "4.0.0-alpha.6",
     "classnames": "^2.2.5",
@@ -39,10 +40,11 @@
     "react-router": "^2.6.1",
     "react-router-dom": "^4.1.1",
     "react-scripts": "^1.0.7",
-    "reactstrap": "^4.6.2"
+    "reactstrap": "^4.6.2",
+    "winston": "^2.3.1"
   },
   "lint-staged": {
-    "src/**/*.js": [
+    "**/*.js": [
       "npm run lint",
       "git add"
     ]
@@ -50,7 +52,7 @@
   "scripts": {
     "start-js": "react-scripts start",
     "start-old": "concurrently \"PORT=3001 node server\"  \"NODE_ENV=production npm-run-all -p start-js\"",
-    "start": "node server",
+    "start": "node index.js",
     "start:dev": "concurrently \"PORT=3001 node server\"  \"NODE_ENV=development npm-run-all -p start-js\"",
     "heroku-postbuild": "react-scripts build",
     "postinstall": "react-scripts build",
@@ -60,8 +62,8 @@
     "eject": "react-scripts eject",
     "test": "mocha test",
     "precommit": "lint-staged",
-    "lint": "eslint ./src/",
-    "lint-fix": "eslint --fix ./src/"
+    "lint": "eslint ./",
+    "lint-fix": "eslint --fix ./"
   },
   "proxy": "http://localhost:3001",
   "devDependencies": {

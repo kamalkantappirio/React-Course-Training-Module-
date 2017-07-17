@@ -7,12 +7,11 @@ require('dotenv').config();
 
 // Set Force.com app's clientID
 // const CF_CLIENT_ID = '3MVG9ZL0ppGP5UrC80AgNht24mMAjVhKNz_9ZNk1e7RbnQD3XHeVD7FWBwshwXinEYUGozdKTH2CcxvH0MjaI';
-const CF_CLIENT_ID = '3MVG9CEn_O3jvv0wXLYYwjX2Kqgf9dsyW0OeHXaGoBwDNeWEJh8YQX9iwXgo7YUUY5GYXrfvoUr_uNwJ0sykd';
+const CF_CLIENT_ID = process.env.CLIENT_ID;
 
 // Set Force.com app's clientSecret
 // const CF_CLIENT_SECRET = '8328306587854636993';
-const CF_CLIENT_SECRET = '5206129170910061874';
-
+const CF_CLIENT_SECRET = process.env.SECRET;
 // Note: You should have a app.get(..) for this callback to receive callback
 // from Force.com
 //
@@ -24,8 +23,7 @@ const CF_CLIENT_SECRET = '5206129170910061874';
 //
 //   app.get('/auth/forcedotcom/callback, callback))
 //
-const CF_CALLBACK_URL = `${process.env.WEB_ROOT}/auth/forcedotcom/callback`
-
+const CF_CALLBACK_URL = `${process.env.WEB_ROOT}/auth/forcedotcom/callback`;
 
 // Salesforce Authorization URL (this defaults to:
 // https://login.salesforce.com/services/oauth2/authorize)
@@ -35,25 +33,24 @@ const SF_AUTHORIZE_URL = 'https://login.salesforce.com/services/oauth2/authorize
 // https://login.salesforce.com/services/oauth2/token)
 const SF_TOKEN_URL = 'https://login.salesforce.com/services/oauth2/token';
 
-passport.serializeUser(function(user, done) {
-    done(null, user);
+passport.serializeUser((user, done) => {
+  done(null, user);
 });
 
-passport.deserializeUser(function(obj, done) {
-    done(null, obj);
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
 });
 
 const sfStrategy = new ForceDotComStrategy({
-    clientID: CF_CLIENT_ID,
-    clientSecret: CF_CLIENT_SECRET,
-    callbackURL: CF_CALLBACK_URL,
-    authorizationURL: SF_AUTHORIZE_URL,
-    tokenURL: SF_TOKEN_URL
-}, function(accessToken, refreshToken, profile, done) {
-
+  clientID: CF_CLIENT_ID,
+  clientSecret: CF_CLIENT_SECRET,
+  callbackURL: CF_CALLBACK_URL,
+  authorizationURL: SF_AUTHORIZE_URL,
+  tokenURL: SF_TOKEN_URL
+}, (accessToken, refreshToken, profile, done) => {
     // asynchronous verification, for effect...
-    process.nextTick(function() {
-
+  const profiles = profile;
+  process.nextTick(() => {
        // console.log(accessToken);
 
         // To keep the example simple, the user's forcedotcom profile is returned to
@@ -62,10 +59,10 @@ const sfStrategy = new ForceDotComStrategy({
         // and return that user instead.
         //
         // We'll remove the raw profile data here to save space in the session store:
-        delete profile._raw;
+    delete profiles._raw;
 
-        return done(null,accessToken);
-    });
+    return done(null, accessToken);
+  });
 });
 
 passport.use(sfStrategy);

@@ -10,7 +10,26 @@ export function getAccountList() {
   const options = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ accessToken: localStorage.getItem('accessToken'), instanceUrl: localStorage.getItem('instanceUrl') })
+    body: JSON.stringify({
+      accessToken: localStorage.getItem('accessToken'),
+      instanceUrl: localStorage.getItem('instanceUrl')
+    })
+  };
+
+  return handleFetch(url, options);
+}
+
+export function getAccountListWithMapping() {
+  const url = `${API_CONST.ACCOUNT}`;
+
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      accessToken: localStorage.getItem('accessToken'),
+      instanceUrl: localStorage.getItem('instanceUrl'),
+      param: [{ field: 'name' }, { field: 'address' }, { field: 'goals' }]
+    })
   };
 
   return handleFetch(url, options);
@@ -22,6 +41,18 @@ export function getAccountMapping() {
   const options = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
+  };
+
+  return handleFetch(url, options);
+}
+
+export function updateAccountMapping(data) {
+  const url = `${API_CONST.MAPPING}`;
+
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
   };
 
   return handleFetch(url, options);
