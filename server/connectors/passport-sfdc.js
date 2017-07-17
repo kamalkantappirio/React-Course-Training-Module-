@@ -12,7 +12,6 @@ const CF_CLIENT_ID = process.env.CLIENT_ID;
 // Set Force.com app's clientSecret
 // const CF_CLIENT_SECRET = '8328306587854636993';
 const CF_CLIENT_SECRET = process.env.SECRET;
-
 // Note: You should have a app.get(..) for this callback to receive callback
 // from Force.com
 //
@@ -25,7 +24,6 @@ const CF_CLIENT_SECRET = process.env.SECRET;
 //   app.get('/auth/forcedotcom/callback, callback))
 //
 const CF_CALLBACK_URL = `${process.env.WEB_ROOT}/auth/forcedotcom/callback`;
-
 
 // Salesforce Authorization URL (this defaults to:
 // https://login.salesforce.com/services/oauth2/authorize)

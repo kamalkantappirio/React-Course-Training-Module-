@@ -1,15 +1,14 @@
 /* eslint-disable arrow-body-style */
-import 'newrelic';
-import express from 'express';
-import path from 'path';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import session from 'express-session';
-import passport from 'passport';
-import api from './routes';
-import account from './sfdc';
-import pgClient from './sfdc/pgclient';
-import './connectors/passport-sfdc';
+require('newrelic');
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
+const cors = require('cors');
+const session = require('express-session');
+const passport = require('passport');
+const account = require('./sfdc');
+const pgClient = require('./sfdc/pgclient');
+require('./connectors/passport-sfdc');
 
 require('dotenv').config();
 
@@ -26,7 +25,6 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
 
-app.use('/api', api);
 
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -91,7 +89,7 @@ app.post('/login', (req, res) => {
 //   request.  The first step in Force.com authentication will involve
 //   redirecting the user to your domain.  After authorization, Force.com will
 //   redirect the user back to this application at /auth/forcedotcom/callback
-app.get('/auth/forcedotcom', passport.authenticate('forcedotcom'), () => {
+app.get('/auth/forcedotcom', passport.authenticate('forcedotcom'), (req, res) => { // eslint-disable-line
     // The request will be redirected to Force.com for authentication, so this
     // function will not be called.
 });
@@ -108,6 +106,7 @@ app.get('/auth/forcedotcom/callback', passport.authenticate('forcedotcom', {
 });
 
 app.get('/logout', (req, res) => {
+  req.logout();
   res.redirect('/');
 });
 
@@ -115,7 +114,7 @@ app.get('/logout', (req, res) => {
 app.use(express.static(path.resolve(__dirname, '..', 'build')));
 
 // Redirect all routes back to index.html, as this is simply serves up a SPA
-app.get('/[^.]+$', (req, res) => {
+app.get('/[^\.]+$', (req, res) => { // eslint-disable-line
   res.set('Content-Type', 'text/html')
     .sendFile(`${__dirname}/build/index.html`);
 });

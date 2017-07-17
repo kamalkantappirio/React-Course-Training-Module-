@@ -8,9 +8,7 @@ class App extends Component {
     const { location } = this.props;
     const token = location.query.access_token || localStorage.getItem('accessToken');
     const instanceUrl = location.query.instance_url || localStorage.getItem('instanceUrl');
-    const userId = location.query.user_id || localStorage.getItem('userId');
     if (token) {
-      localStorage.setItem('userId', userId);
       localStorage.setItem('accessToken', token);
       localStorage.setItem('instanceUrl', instanceUrl);
       browserHistory.replace('/home');

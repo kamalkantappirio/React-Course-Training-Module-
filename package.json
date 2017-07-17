@@ -52,7 +52,7 @@
   "scripts": {
     "start-js": "react-scripts start",
     "start-old": "concurrently \"PORT=3001 node server\"  \"NODE_ENV=production npm-run-all -p start-js\"",
-    "start": "node server",
+    "start": "node index.js",
     "start:dev": "concurrently \"PORT=3001 node server\"  \"NODE_ENV=development npm-run-all -p start-js\"",
     "heroku-postbuild": "react-scripts build",
     "postinstall": "react-scripts build",

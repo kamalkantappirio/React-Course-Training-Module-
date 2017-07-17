@@ -48,7 +48,7 @@ class Home extends Component {
       <div className="container">
         {
           (this.state.logout === true)
-              ? <button onClick={this._handleLogin}>Login</button>
+              ? <button onClick={this._handleLogin}>User 2 Login</button>
               : <button onClick={this._handleLogout}>Logout</button>
         }
         <button onClick={this._handleMapping}>Mapping</button>

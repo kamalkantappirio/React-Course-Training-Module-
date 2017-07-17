@@ -1,8 +1,8 @@
 /* eslint-disable no-unused-vars,no-param-reassign */
-import winston from 'winston';
-import jsforce from 'jsforce';
-import Promise from 'bluebird';
-import pgClient from './pgclient';
+const winston = require('winston');
+const jsforce = require('jsforce');
+const Promise = require('bluebird');
+const pgClient = require('./pgclient');
 
 const getAccountList = (accessToken = '', instanceUrl = '') => new Promise((resolve, reject) => {
   const conn = new jsforce.Connection({
