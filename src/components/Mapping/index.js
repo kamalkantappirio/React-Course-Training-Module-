@@ -122,7 +122,7 @@ class Mapping extends Component {
             .then((response) => {
               const state = Object.assign({}, this.state);
               state.loading = false;
-              if (response !== 'undefine' && response !== null && response.records !== 'undefine') {
+              if (response !== 'undefined' && response !== null && response.records !== 'undefined') {
                 this.setState({ accountMapping: response });
               }
             })
