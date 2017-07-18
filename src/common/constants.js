@@ -6,7 +6,8 @@ export const API_CONST = {
   ACCOUNT: '/account',
   LOGIN: '/login',
   LOGOUT: '/logout',
-  MAPPING: '/mapping'
+  MAPPING: '/mapping',
+  FIELDS: '/fields'
 };
 
 export const END_POINT = {

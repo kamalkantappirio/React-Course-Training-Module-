@@ -14,6 +14,18 @@ const getAccountList = (accessToken = '', instanceUrl = '') => new Promise((reso
     .then(response => resolve(response), err => reject(err));
 });
 
+const getObjectDesc = (accessToken = '', instanceUrl = '') => new Promise((resolve, reject) => {
+  const conn = new jsforce.Connection({
+    instanceUrl,
+    accessToken
+  });
+  conn.sobject('Account').describe((err, meta) => {
+    if (err) {
+      return reject(err);
+    }
+    return resolve(meta);
+  });
+});
 
 const getAccountListWithMapping = (accessToken = '', instanceUrl = '', param = []) => pgClient.getMapping(param).then((rows) => {
   const fields = [];
@@ -114,6 +126,7 @@ module.exports = {
   getAccountList,
   authUserSfdc,
   getContacts,
-  getAccountListWithMapping
+  getAccountListWithMapping,
+  getObjectDesc
 };
 

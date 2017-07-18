@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { Button, Table } from 'reactstrap';
-import { getAccountMapping, updateAccountMapping } from '../../common/services/restclient';
+import { getAccountMapping, updateAccountMapping, getAccountApi } from '../../common/services/restclient';
 
 class Mapping extends Component {
   state = {
@@ -58,6 +58,7 @@ class Mapping extends Component {
 
   componentDidMount() {
     this._getAccountObject();
+    this._getAccountFields();
   }
 
     /**
@@ -87,6 +88,7 @@ class Mapping extends Component {
 
   _updateAccountObject = () => {
     updateAccountMapping(this.state.accountMapping).then(() => {
+      console.log('Mapping successfully updated..!');
       this.setState({ loading: false });
       const notification = webkitNotifications.createNotification(
         '48.png',  // icon url - can be relative
@@ -99,18 +101,34 @@ class Mapping extends Component {
       this.setState({ error, loading: false });
     });
   }
-  _getAccountObject = () => {
-    getAccountMapping()
+
+  _getAccountFields = () => {
+    getAccountApi()
       .then((response) => {
+        console.log(response);
         const state = Object.assign({}, this.state);
         state.loading = false;
-        if (response !== 'undefine' && response !== null && response.records !== 'undefine') {
-          this.setState({ accountMapping: response });
+        if (response !== 'undefine' && response !== null) {
+          this.setState({ fieldsArr: response });
         }
       })
       .catch((error) => {
         this.setState({ error, loading: false });
       });
+  };
+
+  _getAccountObject = () => {
+    getAccountMapping()
+            .then((response) => {
+              const state = Object.assign({}, this.state);
+              state.loading = false;
+              if (response !== 'undefine' && response !== null && response.records !== 'undefine') {
+                this.setState({ accountMapping: response });
+              }
+            })
+            .catch((error) => {
+              this.setState({ error, loading: false });
+            });
   };
 
   _handleLogout = () => {

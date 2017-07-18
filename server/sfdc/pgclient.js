@@ -3,9 +3,9 @@ const knex = require('knex')({
   client: 'pg',
   connection: {
     host: '127.0.0.1',
-    port: '5432',
+    port: '5433',
     user: 'postgres',
-    password: '',
+    password: 'appirio123',
     database: 'postgres'
   },
   pool: { min: 0, max: 7 }

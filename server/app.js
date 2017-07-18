@@ -36,7 +36,8 @@ app.use((req, res, next) => {
 app.post('/account', (req, res) => {
   const accessToken = req.body.accessToken;
   const instanceUrl = req.body.instanceUrl;
-  const aDetail = account.getAccountList(accessToken, instanceUrl);
+  const param = req.body.param;
+  const aDetail = account.getAccountListWithMapping(accessToken, instanceUrl, param);
 
   aDetail.then((response) => {
     return res.status(200).json(response);
@@ -60,11 +61,25 @@ app.get('/mapping', (req, res) => {
   });
 });
 
+app.post('/fields', (req, res) => {
+  const accessToken = req.body.accessToken;
+  const instanceUrl = req.body.instanceUrl;
+
+
+  const aMapping = account.getObjectDesc(accessToken, instanceUrl);
+  aMapping.then((rows) => {
+    return res.json(rows.fields);
+  })
+        .catch((error) => {
+          return error;
+        });
+});
+
 
 app.post('/mapping', (req, res) => {
   const aMapping = pgClient.updateMapping(req.body);
-  aMapping.then((response) => {
-    return res.status(200).json(response);
+  aMapping.then(() => {
+    return res.status(200).json('Records Updated');
   })
   .catch((error) => {
     return error;
