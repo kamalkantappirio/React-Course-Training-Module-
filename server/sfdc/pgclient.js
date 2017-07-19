@@ -8,9 +8,7 @@ const knex = require('knex')({
     password: 'appirio123',
     database: 'postgres'
   },
-  pool: {
-    min: 0,
-    max: 7 }
+  pool: { min: 0, max: 200 }
 });
 
 
