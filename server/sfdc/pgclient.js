@@ -5,11 +5,33 @@ const knex = require('knex')({
     host: '127.0.0.1',
     port: '5433',
     user: 'postgres',
-    password: '',
+    password: 'appirio123',
     database: 'postgres'
   },
-  pool: { min: 0, max: 7 }
+  pool: {
+    min: 0,
+    max: 7 }
 });
+
+
+knex.schema.createTableIfNotExists('account', (table) => {
+  table.increments('id').primary();
+  table.string('field', 500);
+  table.string('mapping', 500);
+  table.string('user', 500);
+}).then(() => knex('account')
+    .returning('id')
+    .insert([{ field: 'name', mapping: 'name' },
+        { field: 'address', mapping: 'BillingCity' },
+        { field: 'goals', mapping: 'mh_Goals__c' },
+        { field: 'notes', mapping: '' },
+        { field: 'strengths', mapping: '' },
+        { field: 'target_total', mapping: '' },
+        { field: 'target_to_date', mapping: '' },
+        { field: 'target_from_date', mapping: '' },
+        { field: 'target_existing', mapping: '' },
+        { field: 'target_estimate', mapping: '' }
+    ]));
 
 
 const getFieldsMapping = () => knex.select('id', 'field', 'mapping').from('account').orderBy('id');
