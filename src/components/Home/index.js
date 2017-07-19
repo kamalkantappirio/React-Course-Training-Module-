@@ -1,34 +1,34 @@
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
 import AccountRow from '../Common/AccountRow';
-import { getAccountListWithMapping } from '../../common/services/restclient';
+import { getAccountListWithMapping, getAccountMapping } from '../../common/services/restclient';
+
 
 class Home extends Component {
   state = {
     loading: false,
+    accountMapping: [],
     accountList: []
   };
 
   componentDidMount() {
-    this._getAccountList();
+    this._getAccountMapping = () => {
+      this._getAccountList();
+    };
   }
-
-  _handleLogout = () => {
-    localStorage.clear();
-    localStorage.setItem('logout', true);
-    browserHistory.replace('/home');
-    this.setState({ logout: true });
+  _getAccountMapping = () => {
+    getAccountMapping()
+            .then((response) => {
+              const state = Object.assign({}, this.state);
+              state.loading = false;
+              if (response !== 'undefined' && response !== null && response.records !== 'undefined') {
+                this.setState({ accountMapping: response });
+              }
+            })
+            .catch((error) => {
+              this.setState({ error, loading: false });
+            });
   };
 
-  _handleLogin = () => {
-    localStorage.setItem('logout', false);
-    browserHistory.replace('/');
-    this.setState({ logout: false });
-  };
-
-  _handleMapping = () => {
-    browserHistory.replace('/mapping');
-  };
   _getAccountList = () => {
     getAccountListWithMapping()
       .then((response) => {
@@ -43,15 +43,10 @@ class Home extends Component {
       });
   };
 
+
   render() {
     return (
-      <div className="container">
-        {
-          (this.state.logout === true)
-              ? <button onClick={this._handleLogin}>User 2 Login</button>
-              : <button onClick={this._handleLogout}>Logout</button>
-        }
-        <button onClick={this._handleMapping}>Mapping</button>
+      <div>
         {!this.state.loading && this.state.logout !== true &&
         <div className="list-group">
           {this.state.accountList.map(account => (<AccountRow key={account.Id} account={account} />))}

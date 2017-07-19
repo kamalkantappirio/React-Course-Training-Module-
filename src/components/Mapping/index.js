@@ -1,6 +1,5 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
 import { Button, Table } from 'reactstrap';
 import { getAccountMapping, updateAccountMapping, getAccountApi } from '../../common/services/restclient';
 
@@ -131,11 +130,6 @@ class Mapping extends Component {
             });
   };
 
-  _handleLogout = () => {
-    localStorage.clear();
-    browserHistory.replace('/');
-  };
-
     /**
      * Method use for render the row for data.
      **/
@@ -159,34 +153,26 @@ class Mapping extends Component {
 
   _renderDropDownOption = (item, index) => (<option key={index}>{item.name}</option>);
 
-  _handleHome = () => {
-    browserHistory.replace('/home');
-  };
 
   render() {
     return (
-      <div className="container">
-        <button onClick={this._handleLogout}>Logout</button>
+      <div >
+        <Table responsive>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Field</th>
+              <th>Mapping</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.accountMapping.map((item, index) => this._renderRow(item, index))}
+          </tbody>
+        </Table>
 
-        <button onClick={this._handleHome}>Home</button>
-        <div>
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Field</th>
-                <th>Mapping</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.accountMapping.map((item, index) => this._renderRow(item, index))}
-            </tbody>
-          </Table>
-
-          <Button type="submit" onClick={this.onSubmitBtnClick}>
+        <Button color="primary" type="submit" onClick={this.onSubmitBtnClick}>
             Submit
           </Button>
-        </div>
       </div>
     );
   }
