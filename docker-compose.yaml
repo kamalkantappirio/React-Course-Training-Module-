@@ -1,0 +1,15 @@
+version: '3'
+services:
+  redis:
+    image: "redis"
+    ports:
+         - "49002:6379"
+  rabbitmq:
+      image: "rabbitmq"
+      ports:
+           - "49000:5672"
+           - "49001:15672"
+  postgres:
+      image: "mdillon/postgis"
+      ports:
+           - "49003:5433"

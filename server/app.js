@@ -65,14 +65,13 @@ app.post('/fields', (req, res) => {
   const accessToken = req.body.accessToken;
   const instanceUrl = req.body.instanceUrl;
 
-
   const aMapping = account.getObjectDesc(accessToken, instanceUrl);
   aMapping.then((rows) => {
     return res.json(rows.fields);
   })
-        .catch((error) => {
-          return error;
-        });
+  .catch((error) => {
+    return error;
+  });
 });
 
 

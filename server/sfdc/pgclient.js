@@ -5,7 +5,7 @@ const knex = require('knex')({
     host: '127.0.0.1',
     port: '5433',
     user: 'postgres',
-    password: 'appirio123',
+    password: '',
     database: 'postgres'
   },
   pool: { min: 0, max: 200 }
@@ -18,18 +18,19 @@ knex.schema.createTableIfNotExists('account', (table) => {
   table.string('mapping', 500);
   table.string('user', 500);
 }).then(() => knex('account')
-    .returning('id')
-    .insert([{ field: 'name', mapping: 'name' },
-        { field: 'address', mapping: 'BillingCity' },
-        { field: 'goals', mapping: 'mh_Goals__c' },
-        { field: 'notes', mapping: '' },
-        { field: 'strengths', mapping: '' },
-        { field: 'target_total', mapping: '' },
-        { field: 'target_to_date', mapping: '' },
-        { field: 'target_from_date', mapping: '' },
-        { field: 'target_existing', mapping: '' },
-        { field: 'target_estimate', mapping: '' }
-    ]));
+  .returning('id')
+  .insert([
+    { field: 'name', mapping: 'name' },
+    { field: 'address', mapping: 'BillingCity' },
+    { field: 'goals', mapping: 'mh_Goals__c' },
+    { field: 'notes', mapping: '' },
+    { field: 'strengths', mapping: '' },
+    { field: 'target_total', mapping: '' },
+    { field: 'target_to_date', mapping: '' },
+    { field: 'target_from_date', mapping: '' },
+    { field: 'target_existing', mapping: '' },
+    { field: 'target_estimate', mapping: '' }
+  ]));
 
 
 const getFieldsMapping = () => knex.select('id', 'field', 'mapping').from('account').orderBy('id');
@@ -45,15 +46,15 @@ const getMapping = (field) => {
 };
 
 const updateFieldsMapping = (id, field, mapping) => knex('account')
-    .where('id', '=', id)
-    .update({
-      field,
-      mapping
-    });
+  .where('id', '=', id)
+  .update({
+    field,
+    mapping
+  });
 
 const updateMapping = records => Promise.all(records.map((record) => {
   updateFieldsMapping(record.id, record.field, record.mapping).then(response => response)
-            .catch(error => error);
+    .catch(error => error);
 })).then(() => {
 
 });

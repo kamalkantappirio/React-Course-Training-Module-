@@ -12,7 +12,6 @@ class App extends Component {
     const { location } = this.props;
     const token = location.query.access_token || localStorage.getItem('accessToken');
     const instanceUrl = location.query.instance_url || localStorage.getItem('instanceUrl');
-    console.log(token);
     if (token) {
       localStorage.setItem('accessToken', token);
       localStorage.setItem('instanceUrl', instanceUrl);

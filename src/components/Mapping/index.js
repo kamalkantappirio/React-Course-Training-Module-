@@ -87,7 +87,6 @@ class Mapping extends Component {
 
   _updateAccountObject = () => {
     updateAccountMapping(this.state.accountMapping).then(() => {
-      console.log('Mapping successfully updated..!');
       this.setState({ loading: false });
       const notification = webkitNotifications.createNotification(
         '48.png',  // icon url - can be relative
@@ -104,10 +103,9 @@ class Mapping extends Component {
   _getAccountFields = () => {
     getAccountApi()
       .then((response) => {
-        console.log(response);
         const state = Object.assign({}, this.state);
         state.loading = false;
-        if (response !== 'undefine' && response !== null) {
+        if (response !== 'undefined' && response !== null) {
           this.setState({ fieldsArr: response });
         }
       })
@@ -118,16 +116,16 @@ class Mapping extends Component {
 
   _getAccountObject = () => {
     getAccountMapping()
-            .then((response) => {
-              const state = Object.assign({}, this.state);
-              state.loading = false;
-              if (response !== 'undefined' && response !== null && response.records !== 'undefined') {
-                this.setState({ accountMapping: response });
-              }
-            })
-            .catch((error) => {
-              this.setState({ error, loading: false });
-            });
+      .then((response) => {
+        const state = Object.assign({}, this.state);
+        state.loading = false;
+        if (response !== 'undefined' && response !== null && response.records !== 'undefined') {
+          this.setState({ accountMapping: response });
+        }
+      })
+      .catch((error) => {
+        this.setState({ error, loading: false });
+      });
   };
 
     /**
