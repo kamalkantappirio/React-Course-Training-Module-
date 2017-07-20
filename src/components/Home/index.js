@@ -10,6 +10,17 @@ class Home extends Component {
     accountMapping: [],
     accountList: []
   };
+
+  componentWillMount() {
+    const loggedIn = localStorage.getItem('logout');
+
+    if (loggedIn) {
+      this.setState({ logout: true });
+    } else {
+      this.setState({ logout: false });
+    }
+  }
+
   componentDidMount() {
     this._getAccountMapping();
     this._getAccountList();
@@ -31,8 +42,14 @@ class Home extends Component {
 
   _handleLogin = () => {
     localStorage.setItem('logout', false);
-    browserHistory.replace('/');
     this.setState({ logout: false });
+    browserHistory.replace('/');
+  };
+
+  _handleLogout = () => {
+    localStorage.setItem('logout', true);
+    this.setState({ logout: true });
+    window.location.href = '/logout';
   };
 
   _handleMapping = () => {

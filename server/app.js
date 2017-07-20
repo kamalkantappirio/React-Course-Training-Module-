@@ -21,7 +21,11 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.set('trust proxy', 'loopback');
 
-app.use(session({ secret: 'keyboard cat' }));
+app.use(session({
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true
+}));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(cors());
