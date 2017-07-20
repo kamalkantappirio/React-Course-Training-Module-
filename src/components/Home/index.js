@@ -33,7 +33,6 @@ class Home extends Component {
       .then((response) => {
         const state = Object.assign({}, this.state);
         state.loading = false;
-        console.log(response);
         if (response !== 'undefined' && response !== null && response !== '') state.accountList = response;
 
         this.setState(state);

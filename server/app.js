@@ -8,6 +8,7 @@ const session = require('express-session');
 const passport = require('passport');
 const account = require('./sfdc');
 const pgClient = require('./sfdc/pgclient');
+const fetch = require('node-fetch');
 require('./connectors/passport-sfdc');
 
 require('dotenv').config();
@@ -122,6 +123,21 @@ app.get('/auth/forcedotcom/callback', passport.authenticate('forcedotcom', {
 app.get('/logout', (req, res) => {
   req.logout();
   res.redirect(`${WEB_ROOT}`);
+});
+
+/* ************ Load Testing Features ************* */
+
+app.get('/hello', (req, res) => {
+  res.status(200).send('Hello World');
+});
+
+app.get('/fetch', (req, res) => {
+  fetch('http://jsonplaceholder.typicode.com/posts/1')
+    .then((response) => {
+      return response.json();
+    }).then((j) => {
+      res.status(200).send(j);
+    });
 });
 
 // Serve static assets

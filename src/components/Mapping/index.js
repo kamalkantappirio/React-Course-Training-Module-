@@ -88,7 +88,7 @@ class Mapping extends Component {
   _updateAccountObject = () => {
     updateAccountMapping(this.state.accountMapping).then(() => {
       this.setState({ loading: false });
-      alert('Mapping successfully updated..!'); window.location = '/';
+      alert('Mapping successfully updated..!'); window.location = '/'; // eslint-disable-line
 
 
      /* const notification = webkitNotifications.createNotification(
