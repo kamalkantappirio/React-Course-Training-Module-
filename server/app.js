@@ -121,7 +121,7 @@ app.get('/auth/forcedotcom/callback', passport.authenticate('forcedotcom', {
 
 app.get('/logout', (req, res) => {
   req.logout();
-  res.redirect('/');
+  res.redirect(`${WEB_ROOT}`);
 });
 
 // Serve static assets

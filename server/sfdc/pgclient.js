@@ -11,26 +11,29 @@ const knex = require('knex')({
   pool: { min: 0, max: 200 }
 });
 
-
-knex.schema.createTableIfNotExists('account', (table) => {
-  table.increments('id').primary();
-  table.string('field', 500);
-  table.string('mapping', 500);
-  table.string('user', 500);
-}).then(() => knex('account')
-  .returning('id')
-  .insert([
-    { field: 'name', mapping: 'name' },
-    { field: 'address', mapping: 'BillingCity' },
-    { field: 'goals', mapping: 'mh_Goals__c' },
-    { field: 'notes', mapping: '' },
-    { field: 'strengths', mapping: '' },
-    { field: 'target_total', mapping: '' },
-    { field: 'target_to_date', mapping: '' },
-    { field: 'target_from_date', mapping: '' },
-    { field: 'target_existing', mapping: '' },
-    { field: 'target_estimate', mapping: '' }
-  ]));
+knex.schema.hasTable('account').then((exists) => {
+  if (!exists) {
+    knex.schema.createTable('account', (table) => {
+      table.increments('id').primary();
+      table.string('field', 500);
+      table.string('mapping', 500);
+      table.string('user', 500);
+    }).then(() => knex('account')
+            .returning('id')
+            .insert([
+                { field: 'name', mapping: 'Name' },
+                { field: 'address', mapping: 'BillingCity' },
+                { field: 'goals', mapping: 'mh_Goals__c' },
+                { field: 'notes', mapping: '' },
+                { field: 'strengths', mapping: '' },
+                { field: 'target_total', mapping: '' },
+                { field: 'target_to_date', mapping: '' },
+                { field: 'target_from_date', mapping: '' },
+                { field: 'target_existing', mapping: '' },
+                { field: 'target_estimate', mapping: '' }
+            ]));
+  }
+});
 
 
 const getFieldsMapping = () => knex.select('id', 'field', 'mapping').from('account').orderBy('id');
@@ -42,7 +45,7 @@ const getMapping = (field) => {
   });
 
 
-  return knex.select('mapping').from('account').whereIn('field', param);
+  return knex.select('field', 'mapping').from('account').whereIn('field', param);
 };
 
 const updateFieldsMapping = (id, field, mapping) => knex('account')

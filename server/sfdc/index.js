@@ -3,6 +3,7 @@ const winston = require('winston');
 const jsforce = require('jsforce');
 const Promise = require('bluebird');
 const pgClient = require('./pgclient');
+const account = require('./accountwrapper');
 
 const getAccountList = (accessToken = '', instanceUrl = '') => new Promise((resolve, reject) => {
   const conn = new jsforce.Connection({
@@ -28,9 +29,9 @@ const getObjectDesc = (accessToken = '', instanceUrl = '') => new Promise((resol
 });
 
 const getAccountListWithMapping = (accessToken = '', instanceUrl = '', param = []) => pgClient.getMapping(param).then((rows) => {
-  const fields = [];
+  const mapping = [];
   rows.forEach((field) => {
-    fields.push(field.mapping);
+    mapping.push(`${field.mapping}`);
   });
 
   return new Promise((resolve, reject) => {
@@ -39,8 +40,21 @@ const getAccountListWithMapping = (accessToken = '', instanceUrl = '', param = [
       accessToken
     });
 
-    conn.query(`SELECT ${fields.join(',')} FROM Account LIMIT 20`)
-      .then(response => resolve(response), err => reject(err));
+    const uniqueArray = mapping.filter((item, pos) => mapping.indexOf(item) === pos);
+
+    conn.query(`SELECT Id, ${uniqueArray.join(',')} FROM Account LIMIT 20`)
+      .then((response) => {
+        const accounts = [];
+
+        if (response.records.length > 0) {
+          response.records.map((acc) => {
+            accounts.push(account(acc, rows));
+            return '';
+          });
+
+          resolve(accounts);
+        } else { resolve(''); }
+      }, err => reject(err));
   });
 })
   .catch((error) => {

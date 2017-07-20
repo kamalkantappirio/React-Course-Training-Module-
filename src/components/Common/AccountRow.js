@@ -2,14 +2,21 @@ import React, { PropTypes } from 'react';
 import classnames from 'classnames';
 
 const AccountRow = ({ account }) => (
-  <button className={classnames('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start')}>
+
+  <div className={classnames('list-group-item', 'list-group-item-action', 'flex-column', 'align-items-start')}>
     <div className={classnames('d-flex', 'w-100', 'justify-content-between')}>
       <h5 className="mb-1">
-        {account.Name}
+        Name: {account.name}
       </h5>
-      {/* <small className='align-item-end'>{ account.Id }</small>*/}
     </div>
-  </button>
+    <div>
+      <h7>
+        Goals: {account.goals}
+      </h7>
+
+    </div>
+  </div>
+
 );
 
 AccountRow.propTypes = {

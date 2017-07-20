@@ -2,13 +2,15 @@
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import { Navbar, NavbarBrand, Nav, NavItem, Button } from 'reactstrap';
+import { API_CONST } from '../../common/constants';
 
 class Header extends Component {
 
   _handleLogout = () => {
     localStorage.clear();
     localStorage.setItem('logout', true);
-    browserHistory.replace('/home');
+    window.location.href = `${API_CONST.LOGOUT}`;
+    // browserHistory.replace('/');
     this.setState({ logout: true });
   };
 

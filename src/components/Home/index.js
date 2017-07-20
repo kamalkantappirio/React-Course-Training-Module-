@@ -9,12 +9,11 @@ class Home extends Component {
     accountMapping: [],
     accountList: []
   };
-
   componentDidMount() {
-    this._getAccountMapping = () => {
-      this._getAccountList();
-    };
+    this._getAccountMapping();
+    this._getAccountList();
   }
+
   _getAccountMapping = () => {
     getAccountMapping()
             .then((response) => {
@@ -34,7 +33,8 @@ class Home extends Component {
       .then((response) => {
         const state = Object.assign({}, this.state);
         state.loading = false;
-        if (response !== 'undefined' && response !== null && response.records !== 'undefine') state.accountList = response.records;
+        console.log(response);
+        if (response !== 'undefined' && response !== null && response !== '') state.accountList = response;
 
         this.setState(state);
       })
@@ -49,7 +49,7 @@ class Home extends Component {
       <div>
         {!this.state.loading && this.state.logout !== true &&
         <div className="list-group">
-          {this.state.accountList.map(account => (<AccountRow key={account.Id} account={account} />))}
+          {this.state.accountList.map(account => (<AccountRow index={account.Id} account={account} />))}
         </div>}
       </div>
     );

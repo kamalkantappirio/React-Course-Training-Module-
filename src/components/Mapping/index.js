@@ -88,12 +88,15 @@ class Mapping extends Component {
   _updateAccountObject = () => {
     updateAccountMapping(this.state.accountMapping).then(() => {
       this.setState({ loading: false });
-      const notification = webkitNotifications.createNotification(
+      alert('Mapping successfully updated..!'); window.location = '/';
+
+
+     /* const notification = webkitNotifications.createNotification(
         '48.png',  // icon url - can be relative
         'MHG Bluesky',  // notification title
         'Mapping successfully updated..!'  // notification body text
       );
-      notification.show();
+      notification.show();*/
     })
     .catch((error) => {
       this.setState({ error, loading: false });
