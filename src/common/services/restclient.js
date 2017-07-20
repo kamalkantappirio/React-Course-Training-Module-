@@ -46,23 +46,6 @@ export function getAccountMapping() {
   return handleFetch(url, options);
 }
 
-
-export function getAccountApi() {
-  const url = `${API_CONST.FIELDS}`;
-
-  const options = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      accessToken: localStorage.getItem('accessToken'),
-      instanceUrl: localStorage.getItem('instanceUrl')
-    })
-  };
-
-
-  return handleFetch(url, options);
-}
-
 export function updateAccountMapping(data) {
   const url = `${API_CONST.MAPPING}`;
 

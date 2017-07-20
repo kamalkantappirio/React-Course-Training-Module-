@@ -35,7 +35,6 @@ knex.schema.hasTable('account').then((exists) => {
   }
 });
 
-
 const getFieldsMapping = () => knex.select('id', 'field', 'mapping').from('account').orderBy('id');
 
 const getMapping = (field) => {
@@ -45,19 +44,19 @@ const getMapping = (field) => {
   });
 
 
-  return knex.select('field', 'mapping').from('account').whereIn('field', param);
+  return knex.select('mapping').from('account').whereIn('field', param);
 };
 
 const updateFieldsMapping = (id, field, mapping) => knex('account')
-  .where('id', '=', id)
-  .update({
-    field,
-    mapping
-  });
+    .where('id', '=', id)
+    .update({
+      field,
+      mapping
+    });
 
 const updateMapping = records => Promise.all(records.map((record) => {
   updateFieldsMapping(record.id, record.field, record.mapping).then(response => response)
-    .catch(error => error);
+            .catch(error => error);
 })).then(() => {
 
 });
