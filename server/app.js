@@ -8,8 +8,8 @@ const session = require('express-session');
 const passport = require('passport');
 const account = require('./sfdc');
 const pgClient = require('./sfdc/pgclient');
-require('./connectors/passport-sfdc');
 const fetch = require('node-fetch');
+require('./connectors/passport-sfdc');
 
 require('dotenv').config();
 
