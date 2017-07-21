@@ -28,16 +28,16 @@ class Home extends Component {
 
   _getAccountMapping = () => {
     getAccountMapping()
-            .then((response) => {
-              const state = Object.assign({}, this.state);
-              state.loading = false;
-              if (response !== 'undefined' && response !== null && response.records !== 'undefined') {
-                this.setState({ accountMapping: response });
-              }
-            })
-            .catch((error) => {
-              this.setState({ error, loading: false });
-            });
+      .then((response) => {
+        const state = Object.assign({}, this.state);
+        state.loading = false;
+        if (response !== 'undefined' && response !== null && response.records !== 'undefined') {
+          this.setState({ accountMapping: response });
+        }
+      })
+      .catch((error) => {
+        this.setState({ error, loading: false });
+      });
   };
 
   _handleLogin = () => {
@@ -58,7 +58,6 @@ class Home extends Component {
   _getAccountList = () => {
     getAccountListWithMapping()
       .then((response) => {
-        console.log(response);
         const state = Object.assign({}, this.state);
         state.loading = false;
         if (response !== 'undefined' && response !== null) state.accountList = response;
@@ -74,7 +73,6 @@ class Home extends Component {
   render() {
     return (
       <div className="container">
-
         <div className="list-group">
           {this.state.accountList.map(account => (<AccountRow key={account.Id} account={account} />))}
         </div>

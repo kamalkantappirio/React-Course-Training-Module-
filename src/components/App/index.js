@@ -1,8 +1,7 @@
-/* eslint-disable react/prop-types */
+/* react/prop-types */
 import React, { Component, PropTypes } from 'react';
 import Header from '../Common/Header';
 import { API_CONST } from '../../common/constants';
-
 
 class App extends Component {
 
@@ -37,7 +36,8 @@ class App extends Component {
 }
 
 App.propTypes = {
-  location: PropTypes.shape({})
+  location: PropTypes.shape({}),
+  children: PropTypes.shape({})
 };
 
 App.defaultProps = {

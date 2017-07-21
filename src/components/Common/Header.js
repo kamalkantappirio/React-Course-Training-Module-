@@ -13,9 +13,9 @@ class Header extends Component {
     const loggedIn = localStorage.getItem('logout');
 
     if (loggedIn) {
-      this.setState({ logout: true });
-    } else {
       this.setState({ logout: false });
+    } else {
+      this.setState({ logout: true });
     }
   }
 
@@ -26,17 +26,17 @@ class Header extends Component {
     this.setState({ logout: true });
 
     Logout()
-          .then((response) => {
-            console.log(response);
-            const state = Object.assign({}, this.state);
-            state.loading = false;
-            if (response !== 'undefined' && response !== null) state.accountList = response;
+      .then((response) => {
+        console.log(response);
+        const state = Object.assign({}, this.state);
+        state.loading = false;
+        if (response !== 'undefined' && response !== null) state.accountList = response;
 
-            this.setState(state);
-          })
-          .catch((error) => {
-            this.setState({ error, loading: false });
-          });
+        this.setState(state);
+      })
+      .catch((error) => {
+        this.setState({ error, loading: false });
+      });
   };
 
   _handleLogin = () => {
@@ -61,7 +61,7 @@ class Header extends Component {
           <p >&nbsp;</p>
           <NavItem>
             {(this.state.logout === true)
-                            ? <Button color="info" onClick={this._handleLogin}>User 2 Login</Button>
+                            ? <Button color="info" onClick={this._handleLogin}>Login</Button>
                             : <Button color="danger" onClick={this._handleLogout}>Logout</Button>
                         }
           </NavItem>

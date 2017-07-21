@@ -28,7 +28,7 @@ export function getAccountListWithMapping() {
     body: JSON.stringify({
       accessToken: localStorage.getItem('accessToken'),
       instanceUrl: localStorage.getItem('instanceUrl'),
-      param: [{ field: 'name' }, { field: 'address' }, { field: 'goals' }]
+      param: [{ field: 'name' }, { field: 'address' }]
     })
   };
 
@@ -44,8 +44,7 @@ export function Logout() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       accessToken: localStorage.getItem('accessToken'),
-      instanceUrl: localStorage.getItem('instanceUrl'),
-
+      instanceUrl: localStorage.getItem('instanceUrl')
     })
   };
 
