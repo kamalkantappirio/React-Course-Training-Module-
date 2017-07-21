@@ -61,7 +61,6 @@ const sfStrategy = new ForceDotComStrategy({
         // We'll remove the raw profile data here to save space in the session store:
     delete profiles._raw;
 
-    console.log(JSON.stringify(profiles));
 
     return done(null, accessToken, profiles);
   });

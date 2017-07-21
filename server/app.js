@@ -39,7 +39,7 @@ app.use((req, res, next) => {
 });
 
 function loggedIn(req, res, next) {
-  pgClient.setUpTable();
+ // pgClient.setUpTable();
   next();
 }
 
@@ -67,7 +67,6 @@ app.get('/login', passport.authenticate('forcedotcom'), (req, res) => { // eslin
 });
 
 app.get('/mapping', (req, res) => {
-  console.log(req.query);
   const aMapping = pgClient.getFieldsMapping(req.query.userId);
 
   aMapping.then((rows) => {

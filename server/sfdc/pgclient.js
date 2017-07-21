@@ -52,28 +52,28 @@ const setUpTable = userid => knex.schema.hasTable(dbtable.TABLE_CONST.MAPPING).t
                     { field: 'target_from_date', mapping: '', user: userid },
                     { field: 'target_existing', mapping: '', user: userid },
                     { field: 'target_estimate', mapping: '', user: userid }
-                ]));
+                ])).catch(error => error);
   } else {
-    knex(dbtable.TABLE_CONST.MAPPING).count('id').where('user', '=', userid).then(((rows) => {
-      if (rows <= 0) {
+    knex(dbtable.TABLE_CONST.MAPPING).count('id').where(knex.raw('?? = ?', ['user', `${userid}`])).then(((rows) => {
+      if (rows[0].count <= 0) {
         knex(dbtable.TABLE_CONST.MAPPING)
-              .returning('id')
-              .insert([
-                  { field: 'name', mapping: 'Name', user: userid },
-                  { field: 'address', mapping: 'BillingCity', user: userid },
-                  { field: 'goals', mapping: 'mh_Goals__c', user: userid },
-                  { field: 'notes', mapping: '', user: userid },
-                  { field: 'strengths', mapping: '', user: userid },
-                  { field: 'target_total', mapping: '', user: userid },
-                  { field: 'target_to_date', mapping: '', user: userid },
-                  { field: 'target_from_date', mapping: '', user: userid },
-                  { field: 'target_existing', mapping: '', user: userid },
-                  { field: 'target_estimate', mapping: '', user: userid }
-              ]);
+              .returning('id').insert([
+              { field: 'name', mapping: 'Name', user: userid },
+              { field: 'address', mapping: 'BillingCity', user: userid },
+              { field: 'goals', mapping: 'mh_Goals__c', user: userid },
+              { field: 'notes', mapping: '', user: userid },
+              { field: 'strengths', mapping: '', user: userid },
+              { field: 'target_total', mapping: '', user: userid },
+              { field: 'target_to_date', mapping: '', user: userid },
+              { field: 'target_from_date', mapping: '', user: userid },
+              { field: 'target_existing', mapping: '', user: userid },
+              { field: 'target_estimate', mapping: '', user: userid }
+              ]).catch(error => error);
       }
-    }));
+    }))
+        .catch(error => error);
   }
-});
+}).catch(error => error);
 
 const getFieldsMapping = userId => knex.select('id', 'field', 'mapping').from(dbtable.TABLE_CONST.MAPPING).orderBy('id').where('user', '=', userId);
 
