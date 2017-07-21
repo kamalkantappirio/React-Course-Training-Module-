@@ -20,6 +20,7 @@ CLIENT_ID=3MVG9y6x0357HlefiSswuWw415V.Oi7p2VIl.XHPY38QTVzT0mXKwX1gc2CdRroVtkEFTx
 CALLBACK_URL=http://localhost:3000/callback
 SECRET=2030216597700637128
 WEB_ROOT=http://localhost:3001
+DATABASE_URL=postgres://<User>:<Password>@<Host>/<Database>
 ```
 
 ### Start Express Server

@@ -58,9 +58,10 @@ class Home extends Component {
   _getAccountList = () => {
     getAccountListWithMapping()
       .then((response) => {
+        console.log(response);
         const state = Object.assign({}, this.state);
         state.loading = false;
-        if (response !== 'undefined' && response !== null && response.records !== 'undefine') state.accountList = response.records;
+        if (response !== 'undefined' && response !== null) state.accountList = response;
 
         this.setState(state);
       })
@@ -73,16 +74,10 @@ class Home extends Component {
   render() {
     return (
       <div className="container">
-        {
-          (this.state.logout === true)
-              ? <button onClick={this._handleLogin}>User 2 Login</button>
-              : <button onClick={this._handleLogout}>Logout</button>
-        }
-        <button onClick={this._handleMapping}>Mapping</button>
-        {!this.state.loading && this.state.logout !== true &&
+
         <div className="list-group">
           {this.state.accountList.map(account => (<AccountRow key={account.Id} account={account} />))}
-        </div>}
+        </div>
       </div>
     );
   }

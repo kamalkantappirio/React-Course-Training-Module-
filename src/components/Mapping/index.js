@@ -7,51 +7,7 @@ class Mapping extends Component {
   state = {
     loading: false,
     accountFields: [],
-    fieldsArr: [
-      {
-        id: 1,
-        name: 'Select Mapping'
-      }, {
-        id: 2,
-        name: 'name'
-      },
-      {
-        id: 3,
-        name: 'BillingAddress'
-      },
-      {
-        id: 4,
-        name: 'mh_Goals__c'
-      },
-      {
-        id: 5,
-        name: 'Additional_Notes__c'
-      },
-      {
-        id: 6,
-        name: 'mh_our_strengths__c'
-      },
-      {
-        id: 7,
-        name: 'Target_Total__c'
-      },
-      {
-        id: 8,
-        name: 'Target_To_Date__c'
-      },
-      {
-        id: 9,
-        name: 'Target_From_Date__c'
-      },
-      {
-        id: 10,
-        name: 'Target_Existing__c'
-      },
-      {
-        id: 11,
-        name: 'Target_Estimate__c'
-      }
-    ],
+    fieldsArr: [],
     accountMapping: []
   };
 
@@ -145,6 +101,7 @@ class Mapping extends Component {
       <td>
         <select
           className="selectpicker"
+          value={rowData.mapping}
           onChange={event => this.onDropDownChange(rowData.id, event.target.value)}
         >
           {this.state.fieldsArr.map((item, indexVal) => this._renderDropDownOption(item, indexVal))}
@@ -152,7 +109,7 @@ class Mapping extends Component {
       </td>
     </tr>);
 
-  _renderDropDownOption = (item, index) => (<option key={index}>{item.name}</option>);
+  _renderDropDownOption = (item, index) => (<option key={index} value={item.name} >{item.name}</option>);
 
 
   render() {

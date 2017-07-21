@@ -7,7 +7,8 @@ export const API_CONST = {
   LOGIN: '/login',
   LOGOUT: '/logout',
   MAPPING: '/mapping',
-  FIELDS: '/fields'
+  FIELDS: '/fields',
+  AUTH: '/',
 };
 
 export const END_POINT = {

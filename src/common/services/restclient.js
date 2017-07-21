@@ -35,12 +35,30 @@ export function getAccountListWithMapping() {
   return handleFetch(url, options);
 }
 
+
+export function Logout() {
+  const url = `${API_CONST.LOGOUT}`;
+
+  const options = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      accessToken: localStorage.getItem('accessToken'),
+      instanceUrl: localStorage.getItem('instanceUrl'),
+
+    })
+  };
+
+  return handleFetch(url, options);
+}
+
 export function getAccountMapping() {
-  const url = `${API_CONST.MAPPING}`;
+  const url = `${API_CONST.MAPPING}?userId=${localStorage.getItem('userId')}`;
 
   const options = {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' }
+
   };
 
   return handleFetch(url, options);
@@ -55,7 +73,8 @@ export function getAccountApi() {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       accessToken: localStorage.getItem('accessToken'),
-      instanceUrl: localStorage.getItem('instanceUrl')
+      instanceUrl: localStorage.getItem('instanceUrl'),
+      userId: localStorage.getItem('userId')
     })
   };
 

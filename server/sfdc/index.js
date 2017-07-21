@@ -15,6 +15,20 @@ const getAccountList = (accessToken = '', instanceUrl = '') => new Promise((reso
     .then(response => resolve(response), err => reject(err));
 });
 
+const logout = (accessToken = '', instanceUrl = '') => new Promise((resolve, reject) => {
+  const conn = new jsforce.Connection({
+    instanceUrl,
+    accessToken
+  });
+
+  conn.logout((err) => {
+    if (err) { return reject(err); }
+        // now the session has been expired.
+    return resolve('');
+  });
+});
+
+
 const getObjectDesc = (accessToken = '', instanceUrl = '') => new Promise((resolve, reject) => {
   const conn = new jsforce.Connection({
     instanceUrl,
@@ -28,7 +42,7 @@ const getObjectDesc = (accessToken = '', instanceUrl = '') => new Promise((resol
   });
 });
 
-const getAccountListWithMapping = (accessToken = '', instanceUrl = '', param = []) => pgClient.getMapping(param).then((rows) => {
+const getAccountListWithMapping = (accessToken = '', instanceUrl = '', userId, param = []) => pgClient.getMapping(param).then((rows) => {
   const mapping = [];
   rows.forEach((field) => {
     mapping.push(`${field.mapping}`);
@@ -42,9 +56,11 @@ const getAccountListWithMapping = (accessToken = '', instanceUrl = '', param = [
 
     const uniqueArray = mapping.filter((item, pos) => mapping.indexOf(item) === pos);
 
+
     conn.query(`SELECT Id, ${uniqueArray.join(',')} FROM Account LIMIT 20`)
       .then((response) => {
         const accounts = [];
+
 
         if (response.records.length > 0) {
           response.records.map((acc) => {
@@ -141,6 +157,7 @@ module.exports = {
   authUserSfdc,
   getContacts,
   getAccountListWithMapping,
-  getObjectDesc
+  getObjectDesc,
+  logout
 };
 

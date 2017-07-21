@@ -8,8 +8,8 @@ const session = require('express-session');
 const passport = require('passport');
 const account = require('./sfdc');
 const pgClient = require('./sfdc/pgclient');
-const fetch = require('node-fetch');
 require('./connectors/passport-sfdc');
+const fetch = require('node-fetch');
 
 require('dotenv').config();
 
@@ -38,11 +38,19 @@ app.use((req, res, next) => {
   next();
 });
 
-app.post('/account', (req, res) => {
+function loggedIn(req, res, next) {
+  pgClient.setUpTable();
+  next();
+}
+
+
+app.post('/account', loggedIn, (req, res) => {
   const accessToken = req.body.accessToken;
   const instanceUrl = req.body.instanceUrl;
+  const userId = req.body.userId;
   const param = req.body.param;
-  const aDetail = account.getAccountListWithMapping(accessToken, instanceUrl, param);
+
+  const aDetail = account.getAccountListWithMapping(accessToken, instanceUrl, userId, param);
 
   aDetail.then((response) => {
     return res.status(200).json(response);
@@ -53,10 +61,14 @@ app.post('/account', (req, res) => {
 });
 
 
-app.get('/login', (req, res) => passport.authenticate('forcedotcom')(req, res));
+app.get('/login', passport.authenticate('forcedotcom'), (req, res) => { // eslint-disable-line
+    // The request will be redirected to Force.com for authentication, so this
+    // function will not be called.
+});
 
 app.get('/mapping', (req, res) => {
-  const aMapping = pgClient.getFieldsMapping();
+  console.log(req.query);
+  const aMapping = pgClient.getFieldsMapping(req.query.userId);
 
   aMapping.then((rows) => {
     return res.json(rows);
@@ -121,11 +133,15 @@ app.get('/auth/forcedotcom', passport.authenticate('forcedotcom'), (req, res) =>
 app.get('/auth/forcedotcom/callback', passport.authenticate('forcedotcom', {
   failureRedirect: `${WEB_ROOT}/`
 }), (req, res) => {
-  res.redirect(`${WEB_ROOT}/?access_token=${res.req.user.params.access_token}&instance_url=${res.req.user.params.instance_url}`);
+  pgClient.setUpTable(res.req.authInfo.id);
+  res.redirect(`${WEB_ROOT}/?access_token=${res.req.user.params.access_token}&instance_url=${res.req.user.params.instance_url}&userid=${res.req.authInfo.id}`);
 });
 
-app.get('/logout', (req, res) => {
+app.post('/logout', (req, res) => {
+  const accessToken = req.body.accessToken;
+  const instanceUrl = req.body.instanceUrl;
   req.logout();
+  account.logout(accessToken, instanceUrl);
   res.redirect(`${WEB_ROOT}`);
 });
 
@@ -152,5 +168,6 @@ app.get('/[^\.]+$', (req, res) => { // eslint-disable-line
   res.set('Content-Type', 'text/html')
     .sendFile(`${__dirname}/build/index.html`);
 });
+
 
 module.exports = app;
