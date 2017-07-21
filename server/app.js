@@ -1,5 +1,6 @@
 /* eslint-disable arrow-body-style */
 require('newrelic');
+require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -10,8 +11,6 @@ const account = require('./sfdc');
 const pgClient = require('./sfdc/pgclient');
 const fetch = require('node-fetch');
 require('./connectors/passport-sfdc');
-
-require('dotenv').config();
 
 const app = express();
 

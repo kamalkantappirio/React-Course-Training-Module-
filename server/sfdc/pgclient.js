@@ -1,5 +1,6 @@
 /* eslint-disable array-callback-return */
-const dbtable = require('./constants');
+require('dotenv').config();
+const dbtable = require('../common/constants');
 const knex = require('knex')({
   client: 'pg',
   connection: process.env.DATABASE_URL,

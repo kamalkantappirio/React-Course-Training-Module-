@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars,no-param-reassign */
+require('dotenv').config();
 const winston = require('winston');
 const jsforce = require('jsforce');
 const Promise = require('bluebird');
