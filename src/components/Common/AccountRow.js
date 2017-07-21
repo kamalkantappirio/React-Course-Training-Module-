@@ -11,7 +11,7 @@ const AccountRow = ({ account }) => (
     </div>
     <div>
       <h7>
-        Goals: {account.goals}
+        Address: {account.address}
       </h7>
 
     </div>

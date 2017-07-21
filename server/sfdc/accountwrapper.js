@@ -31,7 +31,7 @@ Account.prototype = {
 
     this.notes = _getField('notes', value, mapping);
 
-    this.strehgths = _getField('strehgths', value, mapping);
+    this.strengths = _getField('strengths', value, mapping);
 
     this.target_total = _getField('target_total', value, mapping);
 
