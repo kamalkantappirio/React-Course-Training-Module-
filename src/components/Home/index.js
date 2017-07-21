@@ -14,7 +14,7 @@ class Home extends Component {
   componentWillMount() {
     const loggedIn = localStorage.getItem('logout');
 
-    if (loggedIn) {
+    if (loggedIn === true) {
       this.setState({ logout: true });
     } else {
       this.setState({ logout: false });
