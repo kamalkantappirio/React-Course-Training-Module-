@@ -6,6 +6,7 @@
     "node": "6.11.1"
   },
   "dependencies": {
+    "auth0-js": "^8.8.0",
     "babel-preset-stage-0": "^6.24.1",
     "bluebird": "^3.5.0",
     "body-parser": "^1.17.2",
@@ -41,10 +42,16 @@
     "react-addons-transition-group": "^15.6.0",
     "react-bootstrap": "^0.31.1",
     "react-dom": "^15.2.1",
+    "react-native-circular-progress": "0.0.8",
+    "react-player": "^0.19.1",
     "react-router": "^2.6.1",
     "react-router-dom": "^4.1.1",
     "react-scripts": "^1.0.7",
+    "react-skylight": "^0.4.2",
+    "react-thumbnail": "^1.0.0",
     "react-transition-group": "^2.1.0",
+    "react-uikit-thumbnail": "^2.0.0",
+    "reactjs-percentage-circle": "^1.0.0",
     "reactstrap": "^4.6.2",
     "redis": "^2.7.1",
     "seneca": "^3.4.1",
@@ -52,6 +59,7 @@
     "seneca-transport": "^2.1.1",
     "seneca-web": "^2.1.0",
     "seneca-web-adapter-express": "^1.0.2",
+    "webpack": "^3.4.0",
     "winston": "^2.3.1"
   },
   "lint-staged": {
@@ -61,15 +69,8 @@
     ]
   },
   "scripts": {
-    "start-js": "react-scripts start",
-    "start-old": "concurrently \"PORT=3001 node server\"  \"NODE_ENV=production npm-run-all -p start-js\"",
-    "start": "./node_modules/.bin/heroku-node-settings index.js",
-    "start:dev": "concurrently \"PORT=3001 node server\"  \"NODE_ENV=development npm-run-all -p start-js\"",
-    "heroku-postbuild": "react-scripts build",
-    "postinstall": "react-scripts build",
-    "start:client": "react-scripts start",
-    "start:server": "node server",
     "build": "react-scripts build",
+    "start": "react-scripts start",
     "eject": "react-scripts eject",
     "test": "mocha test",
     "precommit": "lint-staged",

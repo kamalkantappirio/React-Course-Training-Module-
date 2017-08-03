@@ -1,34 +1,27 @@
 /* react/prop-types */
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import Header from '../Common/Header';
-import { API_CONST } from '../../common/constants';
+
 
 class App extends Component {
-
   state = {
-    isValid: false
-
-  };
-  componentDidMount() {
-    const { location } = this.props;
-    const token = location.query.access_token || localStorage.getItem('accessToken');
-    const instanceUrl = location.query.instance_url || localStorage.getItem('instanceUrl');
-    const userId = location.query.userid || localStorage.getItem('userId');
-
-
-    if (token) {
-      localStorage.setItem('accessToken', token);
-      localStorage.setItem('instanceUrl', instanceUrl);
-      localStorage.setItem('userId', userId);
-    } else if (localStorage.getItem('logout') !== true) {
-      window.location.href = `${API_CONST.LOGIN}`;
+    profile: {}
+  }
+  componentWillMount() {
+    const { isAuthenticated } = this.props.route.auth;
+    if (!isAuthenticated()) {
+      this.login();
     }
+  }
+
+  login() {
+    this.props.route.auth.login();
   }
 
   render() {
     return (
-      <div className="container">
-        <Header logout />
+      <div id="wrapper">
+        <Header user={this.props.route.auth} />
         {this.props.children}
       </div>
     );
@@ -36,12 +29,8 @@ class App extends Component {
 }
 
 App.propTypes = {
-  location: PropTypes.shape({}),
-  children: PropTypes.shape({})
-};
-
-App.defaultProps = {
-  location: ''
+  route: React.PropTypes.route,
+  children: React.PropTypes.children
 };
 
 export default App;

@@ -1,0 +1,12 @@
+{
+  "name": "app",
+  "version": "0.0.1",
+  "main": "index.js",
+  "author": "Test",
+  "description": "For test ",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "express": "^4.15.3",
+    "mongoose": "latest"
+  }
+}

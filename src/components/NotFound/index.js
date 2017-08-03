@@ -1,6 +1,7 @@
 // src/components/NotFound/index.js
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import classnames from 'classnames';
+import PropTypes from 'prop-types';
 
 import './style.css';
 

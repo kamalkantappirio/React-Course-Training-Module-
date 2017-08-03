@@ -1,81 +1,101 @@
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
-import AccountRow from '../Common/AccountRow';
-import { getAccountListWithMapping, getAccountMapping } from '../../common/services/restclient';
+import { Link, browserHistory } from 'react-router';
+import { getEnrollCoursesList } from '../../common/services/courses';
+import { RadialProgress } from '../Common/RadialProgress';
 
 
 class Home extends Component {
   state = {
-    loading: false,
-    accountMapping: [],
-    accountList: []
-  };
+    courseList: [],
+    status: ''
+  }
 
   componentWillMount() {
-    const loggedIn = localStorage.getItem('logout');
-
-    if (loggedIn === true) {
-      this.setState({ logout: true });
-    } else {
-      this.setState({ logout: false });
-    }
+    this.getCoursesList();
   }
 
-  componentDidMount() {
-    this._getAccountMapping();
-    this._getAccountList();
-  }
+  onCourseRowClick = (rowData) => {
+    browserHistory.push({ pathname: '/detail',
+      state: {
+        id: rowData.id,
+        courseName: rowData.course_name,
+        courseDescription: rowData.description,
+        pricing: rowData.pricing
+      }
+    });
+  };
 
-  _getAccountMapping = () => {
-    getAccountMapping()
+  getCoursesList = () => {
+    getEnrollCoursesList('101517598720547877433')
       .then((response) => {
-        const state = Object.assign({}, this.state);
-        state.loading = false;
-        if (response !== 'undefined' && response !== null && response.records !== 'undefined') {
-          this.setState({ accountMapping: response });
+        console.log(response);
+        if (!response.error) {
+          if (response.result !== null && response.result.length > 0) {
+            this.setState({ courseList: response.result, status: response.result[0].course_status });
+          }
+        } else {
+          window.alert(response.error);
         }
       })
       .catch((error) => {
-        this.setState({ error, loading: false });
+        console.log(error);
       });
   };
 
-  _handleLogin = () => {
-    localStorage.setItem('logout', false);
-    this.setState({ logout: false });
-    browserHistory.replace('/');
+  calculateCompletedPercentage = (totalVideo, completedVideo) => {
+    if (completedVideo === null ? 0 : completedVideo);
+    if (totalVideo === null ? 0 : totalVideo);
+    const percentage = (completedVideo / totalVideo) * 100;
+    return percentage;
   };
 
-  _handleLogout = () => {
-    localStorage.setItem('logout', true);
-    this.setState({ logout: true });
-    window.location.href = '/logout';
-  };
+  /**
+   * Method use for render the row for data.
+   **/
+  renderCourseRow = (rowData, index) => {
+    let percentage = 0;
+    if (this.state.status === 'completed') {
+      percentage = 100;
+    } else {
+      percentage = this.calculateCompletedPercentage(rowData.total_videos, rowData.completed_videos);
+    }
+    return (<div className="course-container" key={index}>
+      <Link onClick={() => this.onCourseRowClick(rowData)}>
+        <div className="flex">
+          <div className="progress-bar-container">
+            <RadialProgress circleStrokeWidth={10} value={percentage} edgeSize={150} radius={64} unit="percent" />
+          </div>
 
-  _handleMapping = () => {
-    browserHistory.replace('/mapping');
+          <div className="description-row">
+            <h3 className="course-container-h3">{rowData.course_name}</h3>
+            <p className="block-my-training-with-text">{rowData.description}</p>
+            <a className="course-container-a">VIEW COURSES DETAILS</a>
+          </div>
+        </div>
+      </Link>
+    </div>);
   };
-  _getAccountList = () => {
-    getAccountListWithMapping()
-      .then((response) => {
-        const state = Object.assign({}, this.state);
-        state.loading = false;
-        if (response !== 'undefined' && response !== null) state.accountList = response;
-
-        this.setState(state);
-      })
-      .catch((error) => {
-        this.setState({ error, loading: false });
-      });
-  };
-
 
   render() {
     return (
-      <div className="container">
-        <div className="list-group">
-          {this.state.accountList.map(account => (<AccountRow key={account.Id} account={account} />))}
+
+      <div id="page-wrapper">
+
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-lg-12">
+              <h1 className="page-header">
+                My Training
+                <small> Enroll Courses</small>
+              </h1>
+
+            </div>
+          </div>
+          { this.state.courseList.map((item, index) => this.renderCourseRow(item, index))
+          }
         </div>
+
+
       </div>
     );
   }

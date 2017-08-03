@@ -1,5 +1,5 @@
 export const ENVIRONMENT = {
-  API_ROOT: 'http://localhost:3001'
+  API_ROOT: 'http://localhost:3000'
 };
 
 export const API_CONST = {
@@ -10,6 +10,20 @@ export const API_CONST = {
   FIELDS: '/fields',
   AUTH: '/',
 };
+
+export const COURSES = {
+  COURSES_LIST: '/api/v1.0/courses/availableCourseList',
+  COURSES_DETAIL: '/api/v1.0/courses/courseDetail',
+  USER_COURSES_DETAIL: '/api/v1.0/courses/userCourseDetail',
+  ENROLL_COURSE: 'api/v1.0/courses/getUserCourses',
+  USER_COURSE: '/api/v1.0/user/getUserCourses',
+  ENROLL_USER_TO_COURSE: '/api/v1.0/courses/enrollCourse',
+  UPDATE_USER_COURSE: '/api/v1.0/user/updateUserCourse',
+  MARK_COURSE_AS_COMPLETED: '/api/v1.0/user/markCourseCompleted',
+  GET_COMPLETED_COURSES: '/api/v1.0/user/getUserCompletedCourses',
+  GET_VIDEO_LIST: '/api/v1.0/course/getTotalVideos',
+};
+
 
 export const END_POINT = {
   ACCOUNT: '/account',
