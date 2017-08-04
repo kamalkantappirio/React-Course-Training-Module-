@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
-import loading from './loading.svg';
+import loading from '../../common/assets/resources/loading.svg';
+import Auth from '../../Auth/Auth';
 
 class Callback extends Component {
 
-  state = {
-    loading: false
+
+  handleAuthentication = (nextState) => {
+    if (/access_token|id_token|error/.test(nextState.location.hash)) {
+      new Auth().handleAuthentication();
+    }
   }
 
   render() {
@@ -21,6 +25,7 @@ class Callback extends Component {
       backgroundColor: 'white',
     };
 
+    this.handleAuthentication(this.props);
     return (
       <div style={style}>
         <img src={loading} alt="loading" />

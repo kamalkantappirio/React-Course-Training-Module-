@@ -22,6 +22,10 @@ export const COURSES = {
   MARK_COURSE_AS_COMPLETED: '/api/v1.0/user/markCourseCompleted',
   GET_COMPLETED_COURSES: '/api/v1.0/user/getUserCompletedCourses',
   GET_VIDEO_LIST: '/api/v1.0/course/getTotalVideos',
+  ADD_COURSE_NOTES: '/api/v1.0/course/addCourseNotes',
+  GET_USER_NOTES: '/api/v1.0/course/getUserNotes',
+  GET_COURSE_NOTES: '/api/v1.0/course/getCourseNote',
+
 };
 
 

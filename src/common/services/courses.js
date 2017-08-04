@@ -40,7 +40,6 @@ export function getUserCourseDetail(userId, courseId) {
 
 export function getEnrollCoursesList(userId) {
   const url = `${ENVIRONMENT.API_ROOT}${COURSES.USER_COURSE}`;
-  console.log(url);
   const options = {
     method: 'POST',
     headers: {
@@ -106,6 +105,44 @@ export function getVideoList() {
   const url = `${ENVIRONMENT.API_ROOT}${COURSES.GET_VIDEO_LIST}`;
   const options = {
     method: 'GET'
+  };
+  return handleFetch(url, options);
+}
+
+
+export function addCourseNotes(payload) {
+  const url = `${ENVIRONMENT.API_ROOT}${COURSES.ADD_COURSE_NOTES}`;
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ data: payload })
+  };
+  return handleFetch(url, options);
+}
+
+
+export function getUserNotesList(userId) {
+  const url = `${ENVIRONMENT.API_ROOT}${COURSES.GET_USER_NOTES}`;
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ user_id: userId })
+  };
+  return handleFetch(url, options);
+}
+
+export function getCourseNotes(payload) {
+  const url = `${ENVIRONMENT.API_ROOT}${COURSES.GET_COURSE_NOTES}`;
+  const options = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ data: payload })
   };
   return handleFetch(url, options);
 }

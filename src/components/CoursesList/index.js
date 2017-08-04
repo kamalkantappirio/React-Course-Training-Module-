@@ -35,7 +35,7 @@ class CoursesList extends Component {
   /**
    * Method use for render the row for data.
    **/
-  renderCourseRow = (rowData, index) => (<div key={index} className="gallery_product col-lg-4 col-md-4 col-sm-4 col-xs-6 filter hdpe">
+  renderCourseRow = (rowData, index) => (<div key={index} className="col-sm-4">
 
     <Link target="_blank" onClick={() => this.goingToCourseDetail(rowData)}>
       <div className="thecard">
@@ -68,16 +68,17 @@ class CoursesList extends Component {
             </div>
           </div>
 
-          <div>
-            { this.state.courseList.map((item, index) => this.renderCourseRow(item, index))
+          <div id="mainbox">
+            <div className="row">
+              { this.state.courseList.map((item, index) => this.renderCourseRow(item, index))
             }
+            </div>
           </div>
-
-
         </div>
       </div>
     );
   }
 }
+
 
 export default CoursesList;

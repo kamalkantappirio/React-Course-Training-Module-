@@ -45,7 +45,7 @@ export class RadialProgress extends React.Component {
     if (this.props.animated) {
       this.setInterval();
     } else {
-      this.setState({ value: this.props.value });
+      this.setState({ value: this.props.value, defaultValue: this.props.value });
     }
   }
 
@@ -99,12 +99,13 @@ export class RadialProgress extends React.Component {
         />
         {
           this.props.displayText &&
-          <text x={center} y={center + 10} textAnchor="middle" fontSize="23">{text}%</text>
+          <text x={center} y={center + 10} textAnchor="middle" fontSize="23">{text.toFixed()}%</text>
         }
       </svg>
     );
   }
 }
+
 
 RadialProgress.defaultProps = {
   edgeSize: 100,
