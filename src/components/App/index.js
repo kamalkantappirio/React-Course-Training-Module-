@@ -1,5 +1,6 @@
 /* react/prop-types */
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
+import { browserHistory } from 'react-router';
 import Header from '../Common/Header';
 
 
@@ -7,10 +8,13 @@ class App extends Component {
   state = {
     profile: {}
   }
-  componentWillMount() {
+
+  componentDidMount() {
     const { isAuthenticated } = this.props.route.auth;
     if (!isAuthenticated()) {
-      this.login();
+      browserHistory.push({ pathname: '/' });
+    } else {
+      browserHistory.push({ pathname: '/courses' });
     }
   }
 
@@ -29,8 +33,8 @@ class App extends Component {
 }
 
 App.propTypes = {
-  route: React.PropTypes.route,
-  children: React.PropTypes.children
+  route: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  children: PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 export default App;

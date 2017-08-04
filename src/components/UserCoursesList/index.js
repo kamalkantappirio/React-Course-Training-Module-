@@ -4,10 +4,9 @@ import { getEnrollCoursesList } from '../../common/services/courses';
 import { RadialProgress } from '../Common/RadialProgress';
 
 
-class Home extends Component {
+class UserCoursesList extends Component {
   state = {
-    courseList: [],
-    status: ''
+    courseList: []
   }
 
   componentWillMount() {
@@ -31,7 +30,7 @@ class Home extends Component {
         console.log(response);
         if (!response.error) {
           if (response.result !== null && response.result.length > 0) {
-            this.setState({ courseList: response.result, status: response.result[0].course_status });
+            this.setState({ courseList: response.result });
           }
         } else {
           window.alert(response.error);
@@ -45,7 +44,8 @@ class Home extends Component {
   calculateCompletedPercentage = (totalVideo, completedVideo) => {
     if (completedVideo === null ? 0 : completedVideo);
     if (totalVideo === null ? 0 : totalVideo);
-    const percentage = (completedVideo / totalVideo) * 100;
+    let percentage = (completedVideo / totalVideo) * 100;
+    percentage = Math.round(percentage);
     return percentage;
   };
 
@@ -54,11 +54,13 @@ class Home extends Component {
    **/
   renderCourseRow = (rowData, index) => {
     let percentage = 0;
-    if (this.state.status === 'completed') {
+    if (rowData.course_status === 'completed') {
       percentage = 100;
     } else {
       percentage = this.calculateCompletedPercentage(rowData.total_videos, rowData.completed_videos);
     }
+
+
     return (<div className="course-container" key={index}>
       <Link onClick={() => this.onCourseRowClick(rowData)}>
         <div className="flex">
@@ -101,4 +103,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default UserCoursesList;

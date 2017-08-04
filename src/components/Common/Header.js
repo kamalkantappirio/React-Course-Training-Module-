@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { Component } from 'react';
 import { Link, browserHistory } from 'react-router';
+import { Sidebar } from './Sidebar';
 
 class Header extends Component {
   state = {
@@ -14,7 +15,6 @@ class Header extends Component {
       if (!userProfile) {
         getProfile((err, profile) => {
           if (profile !== null) {
-            console.log(profile);
             this.setState({ profile });
           }
         });
@@ -24,36 +24,18 @@ class Header extends Component {
     }
   }
 
-  menus = {
-    '/courses': {
-      className: 'fa fa-fw fa-dashboard',
-      title: 'Courses',
-    },
-    '/': {
-      className: 'fa fa-fw fa-edit',
-      title: 'My Training',
-    },
-    '/notes': {
-      className: 'fa fa-fw fa-table',
-      title: 'Notes'
-    },
-    '/completedCourses': {
-      className: 'fa fa-fw fa-bar-chart-o',
-      title: 'Completed Courses'
-    },
-    '/videos': {
-      className: 'fa fa-fw fa-desktop',
-      title: 'Videos'
-    }
-  };
-
   _goingToHome = () => {
-    browserHistory.replace('/');
+    browserHistory.replace('/courses');
   };
 
   logout() {
     const userData = this.props.user;
     userData.logout();
+  }
+
+  login() {
+    const userData = this.props.user;
+    userData.login();
   }
 
   renderMenuItem = (route, menu) => {
@@ -70,31 +52,27 @@ class Header extends Component {
 
   render() {
     return (
-      <Link className="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div className="navbar-header">
-          <a className="navbar-brand" href="index.html">Appirio Learning</a>
-        </div>
+      <div>
+        <Link className="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <div className="navbar-header">
+            <Link className="navbar-brand" href="index.html">Appirio Learning</Link>
+          </div>
+          <header className="header hidden-xs">
+            <form action="">
+              <input type="search" name="s" placeholder="Search on learning" />
+            </form>
+            <ul className="nav navbar-right top-nav">
+              <li className="dropdown">
+                <Link className="dropdown-toggle" data-toggle="dropdown" onClick={() => this.login(this)}><i className="fa fa-user" /> {this.props.user.isAuthenticated() ? this.state.profile.name : 'Login'}
+                </Link>
+              </li>
+            </ul>
+            <div className="clr" />
+          </header>
+          {this.props.user.isAuthenticated() && <Sidebar user={this.props.user} />}
+        </Link>
 
-        <ul className="nav navbar-right top-nav">
-
-          <li className="dropdown">
-            <a className="dropdown-toggle" data-toggle="dropdown"><i className="fa fa-user" /> {(this.state.profile !== null && this.state.profile.name !== null) ? this.state.profile.name : ''} </a>
-          </li>
-        </ul>
-
-        {/* <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->*/}
-        <div className="collapse navbar-collapse navbar-ex1-collapse">
-          <ul className="nav navbar-nav side-nav">
-            { Object.keys(this.menus).map(menuKey => this.renderMenuItem(menuKey, this.menus[menuKey]))
-            }
-            <li>
-              <Link onClick={() => this.logout(this)}><i className="fa fa-fw fa-wrench" /> Logout</Link>
-            </li>
-
-          </ul>
-        </div>
-
-      </Link>);
+      </div>);
   }
 }
 

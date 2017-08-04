@@ -5,8 +5,15 @@
   "author": "Test",
   "description": "For test ",
   "dependencies": {
+    "base-64": "^0.1.0",
     "body-parser": "^1.17.2",
+    "cors": "^2.8.4",
     "express": "^4.15.3",
-    "mongoose": "latest"
+    "mongoose": "latest",
+    "passport": "^0.3.2",
+    "passport-auth0": "^0.6.0",
+    "pg": "^7.0.2",
+    "prop-type": "0.0.1",
+    "prop-types": "^15.5.10"
   }
 }

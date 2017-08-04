@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import ReactPlayer from 'react-player';
 import _ from 'lodash';
+import { Link } from 'react-router';
 import { ModalContainer, ModalDialog } from 'react-modal-dialog';
 import { getUserCourseDetail, enrollUserToCourse, updatedUserCourseDetail, completeCourse } from '../../common/services/courses';
 import { RadialProgress } from '../Common/RadialProgress';
-
+import { AddNotes } from '../Common/AddNotes';
 
 class CoursesList extends Component {
 
@@ -28,7 +29,8 @@ class CoursesList extends Component {
     activeTab: 0,
     voucherCode: '',
     isShowingModal: false,
-    status: false
+    status: false,
+    isOpenNotes: false,
   }
 
   componentWillMount() {
@@ -43,10 +45,10 @@ class CoursesList extends Component {
   }
 
   onCourseRowClick =(rowData, index) => {
-    if (!this.state.playing) {
-      this.setState({ url: rowData.video_link, activeTab: index.toString() });
-    } else {
+    if (this.state.playing || index > parseInt(this.state.completedVideos, 10)) {
       window.alert('Please complete running video first.');
+    } else {
+      this.setState({ url: rowData.video_link, activeTab: index.toString() });
     }
   }
 
@@ -80,6 +82,7 @@ class CoursesList extends Component {
   onVoucherCodeSubmit =() => {
     this.onClickEnrollUserToCourse(this.state.voucherCode);
   }
+
   getDetail = () => {
     const courseId = this.props.location.state.id;
     getUserCourseDetail('101517598720547877433', courseId)
@@ -120,7 +123,7 @@ class CoursesList extends Component {
       });
   }
 
-  handleVoucherChange(event) {
+  handleVoucherChange =(event) => {
     this.setState({ voucherCode: event.target.value });
   }
 
@@ -128,7 +131,8 @@ class CoursesList extends Component {
   calculateCompletedPercentage =(totalVideo, completedVideo) => {
     if (completedVideo === null ? 0 : completedVideo);
     if (totalVideo === null ? 0 : totalVideo);
-    const percentage = (completedVideo / totalVideo) * 100;
+    let percentage = (completedVideo / totalVideo) * 100;
+    percentage = Math.round(percentage);
     return percentage;
   }
 
@@ -137,7 +141,7 @@ class CoursesList extends Component {
   handleClose = () => this.setState({ isShowingModal: false })
 
   updateCourseVideo = () => {
-    const completedVideo = parseInt(this.state.activeTab, 100) + 1;
+    const completedVideo = parseInt(this.state.activeTab, 10) + 1;
     const payload = {
       user_id: this.state.userId,
       course_id: this.state.courseId,
@@ -185,14 +189,31 @@ class CoursesList extends Component {
       });
   }
 
+
+  videoItemCss = (index) => {
+    if (index === parseInt(this.state.activeTab, 10)) {
+      return 'list-group-item active';
+    } else if (index > parseInt(this.state.completedVideos, 10)) {
+      return 'list-group-item disabled';
+    }
+    return 'list-group-item';
+  };
+
+  openNotepad = () => {
+    this.setState({ isOpenNotes: true });
+  };
+
+  closeNotepad = () => {
+    this.setState({ isOpenNotes: false });
+  };
+
   /**
    * Method use for render the row for data.
    **/
   renderVideoRow = (rowData, index) => {
-    if (rowData.video_link !== null) { return <li className={this.state.activeTab === index.toString() ? 'list-group-item active' : 'list-group-item'} key={index} > <button onClick={() => this.onCourseRowClick(rowData, index)}>{rowData.name}</button></li>; }
+    if (rowData.video_link !== null) { return <li className={this.videoItemCss(index)} key={index} > <Link onClick={() => this.onCourseRowClick(rowData, index)}>{rowData.name}</Link></li>; }
     return null;
   };
-
 
   render() {
     let percentage = 0;
@@ -201,11 +222,10 @@ class CoursesList extends Component {
     } else {
       percentage = this.calculateCompletedPercentage(this.state.totalVideos, this.state.completedVideos);
     }
-
     return (
       <div id="page-wrapper">
         <div className="container-fluid">
-
+          <AddNotes isOpenNotes={this.state.isOpenNotes} closeNotepad={this.closeNotepad} courseId={this.state.courseId} />
           <div className="row">
             <div className="col-sm-12">
               <h1 className="page-header">
@@ -218,7 +238,7 @@ class CoursesList extends Component {
             <div className="flex">
               {this.state.isEnrolled &&
               <div className="progress-bar-container">
-                <RadialProgress circleStrokeWidth={10} value={percentage} edgeSize={150} radius={64} unit="percent" />
+                <RadialProgress circleStrokeWidth={10} value={percentage} edgeSize={150} radius={64} unit="percent" animated={false} defalutValue={percentage} />
               </div>
               }
 
@@ -228,12 +248,12 @@ class CoursesList extends Component {
                     <h3 className="course-container-h3 "> {this.state.courseName}</h3>
                   </div>
                   <div className="col-sm-2">
+                    {this.state.isEnrolled && this.state.status !== 'completed' && <div className="rightAlign" > <Link className="fa fa-fw fa-edit fa-2x" onClick={this.openNotepad} /></div>}
                     {this.state.isEnrolled ? <h4 className="rightAlign">{this.state.status === 'completed' ? 'COMPLETED' : 'ENROLLED'}</h4> : <h2 className="rightAlign">{this.state.pricing === 0 ? 'FREE' : `$${this.state.pricing}`}</h2>}
-
                   </div>
                 </div>
                 <p>{this.state.courseDescription}</p>
-                {!this.state.isEnrolled && <button type="button" className="btn btn-sm btn-danger" onClick={this.state.pricing === 0 ? () => this.onClickEnrollUserToCourse('free') : this.handleClick}>ENROLL</button>}
+                {!this.state.isEnrolled && this.state.status !== 'completed' && <button type="button" className="btn btn-sm btn-danger" onClick={this.state.pricing === 0 ? () => this.onClickEnrollUserToCourse('free') : this.handleClick}>ENROLL</button>}
                 {this.state.isEnrolled && this.state.status !== 'completed' && <button type="button" className="btn btn-sm btn-danger" onClick={this.markCaurseAsCompeleted}>COMPLETE COURSE</button>}
               </div>
             </div>
@@ -247,9 +267,8 @@ class CoursesList extends Component {
                   playing={this.state.playing}
                   controls
                   width="100%"
-                  height="350px"
-                  onPlay={() => this.setState({ playing: true })}
-                  onEnded={() => this.updateCourseVideo(this)}
+                  height="380px"
+                  onEnded={() => this.updateCourseVideo()}
                 />
               </div>
               <div className="col-sm-6">
@@ -292,7 +311,7 @@ class CoursesList extends Component {
 }
 
 CoursesList.propTypes = {
-  location: React.PropTypes.location,
+  location: React.PropTypes.object, // eslint-disable-line react/forbid-prop-types
 };
 
 export default CoursesList;
